@@ -50,7 +50,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  GoRouter.of(context).go('/home');
+                  context.go('/OwnerHome');
                 },
                 child: Text('Login'),
               ),

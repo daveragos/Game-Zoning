@@ -3,7 +3,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -34,7 +33,9 @@ class _HomePageState extends ConsumerState<HomePage> {
             icon: Icon(Icons.search),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.go('/OwnerHome');
+            },
             icon: Icon(Icons.notifications),
           ),
         ],
@@ -73,7 +74,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.push('/adding');
+          context.goNamed('addingpage');
         },
         child: Icon(Icons.add),
       ),
