@@ -20,7 +20,7 @@ class _BottomNavigationWidgetState
     final position = ref.watch(positionProvider);
     return CurvedNavigationBar(
       index: position,
-      color: Colors.greenAccent,
+      color: Colors.green,
       backgroundColor: Colors.transparent,
       buttonBackgroundColor: Colors.green,
       animationDuration: const Duration(milliseconds: 300),

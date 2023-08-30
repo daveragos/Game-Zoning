@@ -18,14 +18,8 @@ class _HomePageState extends ConsumerState<HomePage> {
       child: Center(
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildInfoContainer('Total Income : 47132.32'),
-                SizedBox(width: 10),
-                _buildInfoContainer('Mon-Aug-28'),
-              ],
-            ),
+            SizedBox(width: 10),
+            _buildInfoContainer('Mon-Aug-28'),
             SizedBox(height: 40),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -95,12 +89,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                       show: false,
                     ),
                     barGroups: [
-                      _buildBarGroupData(0, 8, Colors.lightGreen),
-                      _buildBarGroupData(1, 10, Colors.lightGreen),
-                      _buildBarGroupData(2, 14, Colors.lightGreen),
-                      _buildBarGroupData(3, 15, Colors.lightGreen),
-                      _buildBarGroupData(4, 12, Colors.lightGreen),
-                      _buildBarGroupData(5, 10, Colors.lightGreen),
+                      _buildBarGroupData(0, 8, Colors.green),
+                      _buildBarGroupData(1, 10, Colors.green),
+                      _buildBarGroupData(2, 14, Colors.green),
+                      _buildBarGroupData(3, 15, Colors.green),
+                      _buildBarGroupData(4, 12, Colors.green),
+                      _buildBarGroupData(5, 10, Colors.green),
                     ],
                   ),
                 ),
@@ -137,13 +131,21 @@ class _HomePageState extends ConsumerState<HomePage> {
   Container _buildInfoContainer(String text) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[300],
+        color: Colors.grey[500],
         borderRadius: BorderRadius.circular(10),
       ),
-      padding: EdgeInsets.all(8),
-      child: Text(
-        text,
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
+      child: Column(
+        children: [
+          Text(
+            'Total Income : 47132.32',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            text,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ],
       ),
     );
   }
