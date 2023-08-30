@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gamezoning/screens/owner/bottom_nav.dart';
+import 'package:gamezoning/View/widgets/bottom_nav_widget.dart';
 
 class SwappingPage extends ConsumerStatefulWidget {
   const SwappingPage({required this.child, super.key});

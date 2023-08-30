@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gamezoning/screens/owner/bottom_nav.dart';
+import 'package:gamezoning/View/widgets/appbar_widget.dart';
+import 'package:gamezoning/View/widgets/drawer_widget.dart';
+import 'package:gamezoning/View/widgets/home_page.dart';
 
 class OHomePage extends ConsumerStatefulWidget {
   const OHomePage({super.key});
@@ -13,9 +15,9 @@ class _OHomePageState extends ConsumerState<OHomePage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text('Owner Home Page'),
-      ),
+      appBar: AppBarWidget(),
+      drawer: DrawerWidget(),
+      body: HomePage(),
     );
   }
 }

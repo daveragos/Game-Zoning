@@ -2,7 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gamezoning/Provider/position_provider.dart';
+import 'package:gamezoning/Controller/Provider/position_provider.dart';
 import 'package:go_router/go_router.dart';
 
 class BottomNavigationWidget extends ConsumerStatefulWidget {
