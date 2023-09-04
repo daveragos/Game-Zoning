@@ -12,8 +12,6 @@ class OwnerHome extends ConsumerStatefulWidget {
 class _OwnerHomeState extends ConsumerState<OwnerHome> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: HomePage(),
-    );
+    return const HomePage();
   }
 }

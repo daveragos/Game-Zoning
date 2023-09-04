@@ -22,13 +22,12 @@ class _BottomNavigationWidgetState
       index: position,
       color: Colors.green,
       backgroundColor: Colors.transparent,
-      buttonBackgroundColor: Colors.green,
+      buttonBackgroundColor: Colors.transparent,
       animationDuration: const Duration(milliseconds: 300),
       onTap: (value) => onTap(value),
       items: const [
         Icon(FontAwesomeIcons.chartLine),
         Icon(FontAwesomeIcons.house),
-        Icon(FontAwesomeIcons.chartPie),
       ],
     );
   }
@@ -41,9 +40,6 @@ class _BottomNavigationWidgetState
         break;
       case 1:
         context.go('/OwnerHome');
-        break;
-      case 2:
-        context.go('/piechartpage');
         break;
     }
   }

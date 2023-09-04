@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     ThemeData lightTheme =
         FlexThemeData.light(useMaterial3: true, scheme: FlexScheme.greenM3);
     ThemeData darkTheme =
-        FlexThemeData.dark(useMaterial3: true, scheme: FlexScheme.deepOrangeM3);
+        FlexThemeData.dark(useMaterial3: true, scheme: FlexScheme.greenM3);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: lightTheme,

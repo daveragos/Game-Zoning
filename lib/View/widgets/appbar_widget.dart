@@ -14,7 +14,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: const Center(
         child: Text(
-          'Game Zoning',
+          'Game Zoner',
           style: TextStyle(
             color: Colors.green,
             fontSize: 30,
