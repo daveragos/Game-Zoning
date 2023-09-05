@@ -13,7 +13,6 @@ class PieChartSample2 extends ConsumerStatefulWidget {
 class _PieChart2State extends ConsumerState<PieChartSample2> {
   @override
   Widget build(BuildContext context) {
-    final touchedIndex = ref.watch(selectedTabProvider);
     return PieChart(
       PieChartData(
         pieTouchData: PieTouchData(

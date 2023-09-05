@@ -5,15 +5,21 @@ import 'package:gamezoning/View/Home/register_page.dart';
 import 'package:gamezoning/View/employee/adding_page.dart';
 import 'package:gamezoning/View/owner/individual_linetab_page.dart';
 import 'package:gamezoning/View/owner/o_home_page.dart';
-import 'package:gamezoning/View/owner/weekly_page.dart';
-import 'package:gamezoning/View/owner/weekly_pie_page.dart';
 import 'package:gamezoning/View/owner/swapping_page.dart';
+import 'package:gamezoning/View/widgets/homepage_widget.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
+  static const String ownerHomePath = '/OwnerHome';
+  static const String loginPath = '/login';
+  static const String registerPath = '/register';
+  static const String addingPagePath = 'addingpage';
+  static const String lineChartPagePath = '/LineChartPage';
+  static const String employeeHomePath = '/EmployeeHome';
+
   // GoRouter configuration
   var router = GoRouter(
-    initialLocation: '/LineChartPage',
+    initialLocation: '/',
     routes: [
       GoRoute(
         name: 'authcheck',
@@ -22,23 +28,23 @@ class AppRouter {
       ),
       GoRoute(
         name: 'register',
-        path: '/register',
+        path: registerPath,
         builder: (context, state) => RegisterScreen(),
       ),
       GoRoute(
         name: 'login',
-        path: '/login',
+        path: loginPath,
         builder: (context, state) => const LoginScreen(),
       ),
 
       GoRoute(
         name: 'EmployeeHome',
-        path: '/EmployeeHome',
-        builder: (context, state) => const LoginScreen(),
+        path: employeeHomePath,
+        builder: (context, state) => const HomePage(),
         routes: [
           GoRoute(
             name: 'addingpage',
-            path: 'addingpage',
+            path: addingPagePath,
             builder: (context, state) => AddingPage(),
           ),
         ],
@@ -52,7 +58,7 @@ class AppRouter {
         routes: [
           GoRoute(
             name: 'LineChartPage',
-            path: '/LineChartPage',
+            path: lineChartPagePath,
             pageBuilder: (context, state) {
               return NoTransitionPage(
                 child: IndividualLineTabPage(),
@@ -61,7 +67,7 @@ class AppRouter {
           ),
           GoRoute(
             name: 'OwnerHomePage',
-            path: '/OwnerHome',
+            path: ownerHomePath,
             pageBuilder: (context, state) {
               return NoTransitionPage(
                 child: OwnerHome(),

@@ -2,7 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gamezoning/Controller/Routes/approuter.dart';
+import 'package:gamezoning/Model/api_constants.dart';
+import 'package:gamezoning/View/Home/login_screen.dart';
+import 'package:gamezoning/View/owner/o_home_page.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthCheck extends ConsumerStatefulWidget {
   const AuthCheck({super.key});
@@ -14,34 +19,28 @@ class AuthCheck extends ConsumerStatefulWidget {
 class _AuthCheckState extends ConsumerState<AuthCheck> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(child: const Text('Auth Check')),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                GoRouter.of(context).push('/register');
-              },
-              child: const Text(
-                'Register Page',
+    return FutureBuilder(
+        future: SharedPreferences.getInstance(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
               ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                GoRouter.of(context).go('/login');
-              },
-              child: const Text(
-                'Login Page',
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+            );
+          } else if (snapshot.hasData) {
+            final token = snapshot.data!
+                .getString(AppConstants.STORAGE_USER_PROFILE_TOKEN);
+            if (token != null) {
+              return OwnerHome();
+            } else {
+              return LoginScreen();
+            }
+          } else if (snapshot.hasError) {
+            return Text('Some Error Occured');
+          } else {
+            return LoginScreen();
+          }
+        });
   }
 }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gamezoning/Controller/Routes/approuter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -37,7 +40,11 @@ class DrawerWidget extends StatelessWidget implements PreferredSizeWidget {
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('Logout'),
-            onTap: () {},
+            onTap: () async {
+              SharedPreferences pref = await SharedPreferences.getInstance();
+              await pref.clear();
+              context.go(AppRouter.loginPath);
+            },
           ),
         ],
       ),

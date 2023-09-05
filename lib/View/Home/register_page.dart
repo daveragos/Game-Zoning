@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gamezoning/Model/api.dart';
 import 'package:go_router/go_router.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -19,7 +20,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     TextEditingController passwordController = TextEditingController();
     TextEditingController nameController = TextEditingController();
 
-    void register() {
+    void register() async {
       if (usernameController.text.isEmpty ||
           emailController.text.isEmpty ||
           passwordController.text.isEmpty ||
@@ -41,7 +42,28 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             content: Text('Registering...'),
           ),
         );
-        GoRouter.of(context).go('/login');
+        //! uploading to the server
+        final result = await API().postRequest(route: 'owners/register', data: {
+          'name': nameController.text.toString(),
+          'username': usernameController.text.toString(),
+          'email': emailController.text.toString(),
+          'password': passwordController.text.toString(),
+        });
+        // print(jsonDecode(result.toString()));
+        if (result.statusCode == 200) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Registered Successfully'),
+            ),
+          );
+          GoRouter.of(context).go('/login');
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error: ${result.body}'),
+            ),
+          );
+        }
       }
     }
 
