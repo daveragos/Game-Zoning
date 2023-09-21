@@ -3,6 +3,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gamezoning/Controller/functions/incomes.dart';
 import 'package:gamezoning/Model/api_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,7 +17,9 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   late SharedPreferences preferences;
   bool isLoading = false;
-
+  var selectedDate = DateTime(2023, 9, 19);
+  double totalIncome = 0.0; // Initialize to 0
+  List<Map<String, dynamic>> gameDataList = [];
   @override
   void initState() {
     super.initState();
@@ -27,6 +30,12 @@ class _HomePageState extends ConsumerState<HomePage> {
     setState(() {
       isLoading = true;
     });
+    var responseData = await Income().getIncomeDataByEmployeeAndDate(
+        employeeUserName: "employee3name", date: selectedDate.toString());
+    print(responseData);
+    gameDataList = responseData;
+    // Calculate the total income
+    calculateTotalIncome();
     preferences = await SharedPreferences.getInstance();
     setState(() {
       isLoading = false;
@@ -54,7 +63,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       child: BarChart(
                         BarChartData(
                           alignment: BarChartAlignment.spaceAround,
-                          maxY: 20,
+                          maxY: _calculateMaxAmount(),
                           barTouchData: BarTouchData(enabled: true),
                           titlesData: FlTitlesData(
                               show: true,
@@ -116,12 +125,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                             show: false,
                           ),
                           barGroups: [
-                            _buildBarGroupData(0, 8, Colors.green),
-                            _buildBarGroupData(1, 10, Colors.green),
-                            _buildBarGroupData(2, 14, Colors.green),
-                            _buildBarGroupData(3, 15, Colors.green),
-                            _buildBarGroupData(4, 12, Colors.green),
-                            _buildBarGroupData(5, 10, Colors.green),
+                            _buildBarGroupData(0, Colors.green),
+                            _buildBarGroupData(1, Colors.green),
+                            _buildBarGroupData(2, Colors.green),
+                            _buildBarGroupData(3, Colors.green),
+                            _buildBarGroupData(4, Colors.green),
+                            _buildBarGroupData(5, Colors.green),
                           ],
                         ),
                       ),
@@ -135,7 +144,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                             onPressed: () {
-                              _pickDate;
+                              _openDatePicker();
                             },
                             child: Text('Pick Date')),
                       ),
@@ -147,13 +156,24 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
-  dynamic get _pickDate => {
-        showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2023),
-            lastDate: DateTime.now())
-      };
+  void _openDatePicker() async {
+    final selectedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2023, 9, 19),
+      firstDate: DateTime(2023),
+      lastDate: DateTime.now(),
+    );
+
+    if (selectedDate != null) {
+      // Handle the selected date, e.g., update your UI or make an API call
+      var responseData = await Income().getIncomeDataByEmployeeAndDate(
+          employeeUserName: "employee3name", date: selectedDate.toString());
+      print(responseData);
+      gameDataList = responseData;
+      // Calculate the total income
+      calculateTotalIncome();
+    }
+  }
 
   Container _buildInfoContainer(String text) {
     return Container(
@@ -165,7 +185,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       child: Column(
         children: [
           Text(
-            'Total Income : 47132.32',
+            'Total Income :  ${totalIncome.toStringAsFixed(2)}',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           Text(
@@ -177,21 +197,57 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
-  BarChartGroupData _buildBarGroupData(double x, double y, Color color) {
+  BarChartGroupData _buildBarGroupData(int index, Color color) {
+    if (index >= gameDataList.length) {
+      return BarChartGroupData(x: index, barRods: []);
+    }
+
+    final gameData = gameDataList[index];
+    final maxYValue = _calculateMaxAmount();
+
     return BarChartGroupData(
-      x: x.toInt(),
+      x: index,
       barRods: [
         BarChartRodData(
-            toY: y,
-            color: color,
-            width: 30,
-            backDrawRodData: BackgroundBarChartRodData(
-              show: true,
-              toY: 20,
-              color: Colors.grey[400],
-            ),
-            borderRadius: BorderRadius.circular(8)),
+          toY: gameData['amount'], // Use the "amount" value from gameData
+          color: color,
+          width: 30,
+          backDrawRodData: BackgroundBarChartRodData(
+            show: true,
+            toY: maxYValue, // Set y to maxYValue
+            color: Colors.grey[400],
+          ),
+          borderRadius: BorderRadius.circular(8),
+        ),
       ],
     );
+  }
+
+  double _calculateMaxAmount() {
+    double maxAmount = 0.0;
+
+    for (final gameData in gameDataList) {
+      final amount = gameData['amount'];
+      if (amount > maxAmount) {
+        maxAmount = amount;
+      }
+    }
+
+    // Add some padding to the maxAmount value for better visualization
+    // You can adjust the padding as needed
+    return maxAmount * 1.1;
+  }
+
+  // Function to calculate the total income
+  void calculateTotalIncome() {
+    double income = 0.0;
+
+    for (final gameData in gameDataList) {
+      income += gameData['amount'];
+    }
+
+    setState(() {
+      totalIncome = income;
+    });
   }
 }

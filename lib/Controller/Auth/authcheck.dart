@@ -2,11 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gamezoning/Controller/Routes/approuter.dart';
 import 'package:gamezoning/Model/api_constants.dart';
 import 'package:gamezoning/View/Home/login_screen.dart';
+import 'package:gamezoning/View/employee/e_home_page.dart';
 import 'package:gamezoning/View/owner/o_home_page.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthCheck extends ConsumerStatefulWidget {
@@ -32,7 +31,7 @@ class _AuthCheckState extends ConsumerState<AuthCheck> {
             final token = snapshot.data!
                 .getString(AppConstants.STORAGE_USER_PROFILE_TOKEN);
             if (token != null) {
-              return OwnerHome();
+              return EmployeeHome();
             } else {
               return LoginScreen();
             }

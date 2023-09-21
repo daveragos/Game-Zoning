@@ -11,3 +11,14 @@ class Postioner extends StateNotifier<int> {
     state = value;
   }
 }
+
+final toggleProvider = StateNotifierProvider((ref) => ToggleNotifier());
+
+class ToggleNotifier extends StateNotifier<String> {
+  ToggleNotifier() : super('owner');
+
+  void setToggler(String value) {
+    state = value;
+    print(value);
+  }
+}

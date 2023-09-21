@@ -8,4 +8,6 @@ class API {
     final dio = Dio();
     return await dio.post(AppConstants.API_URL + route, data: data);
   }
+
+  //
 }

@@ -3,6 +3,7 @@ import 'package:gamezoning/Controller/Auth/authcheck.dart';
 import 'package:gamezoning/View/Home/login_screen.dart';
 import 'package:gamezoning/View/Home/register_page.dart';
 import 'package:gamezoning/View/employee/adding_page.dart';
+import 'package:gamezoning/View/employee/e_home_page.dart';
 import 'package:gamezoning/View/owner/individual_linetab_page.dart';
 import 'package:gamezoning/View/owner/o_home_page.dart';
 import 'package:gamezoning/View/owner/swapping_page.dart';
@@ -13,7 +14,7 @@ class AppRouter {
   static const String ownerHomePath = '/OwnerHome';
   static const String loginPath = '/login';
   static const String registerPath = '/register';
-  static const String addingPagePath = 'addingpage';
+  static const String addingPagePath = '/addingpage';
   static const String lineChartPagePath = '/LineChartPage';
   static const String employeeHomePath = '/EmployeeHome';
 
@@ -36,18 +37,16 @@ class AppRouter {
         path: loginPath,
         builder: (context, state) => const LoginScreen(),
       ),
+      GoRoute(
+        name: 'addingpage',
+        path: addingPagePath,
+        builder: (context, state) => AddingPage(),
+      ),
 
       GoRoute(
         name: 'EmployeeHome',
         path: employeeHomePath,
-        builder: (context, state) => const HomePage(),
-        routes: [
-          GoRoute(
-            name: 'addingpage',
-            path: addingPagePath,
-            builder: (context, state) => AddingPage(),
-          ),
-        ],
+        builder: (context, state) => const EmployeeHome(),
       ),
       //the bottom navigation bar
       ShellRoute(

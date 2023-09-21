@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gamezoning/Controller/functions/incomes.dart';
 
 class AddingPage extends ConsumerStatefulWidget {
   const AddingPage({super.key});
@@ -11,6 +12,10 @@ class AddingPage extends ConsumerStatefulWidget {
 }
 
 class _AddingPageState extends ConsumerState<AddingPage> {
+  DateTime? selectedDate;
+  TextEditingController amountController = TextEditingController(text: '');
+  TextEditingController gameController = TextEditingController(text: '');
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -54,11 +59,13 @@ class _AddingPageState extends ConsumerState<AddingPage> {
                         DropdownMenuEntry(value: 'ps', label: 'PS'),
                         DropdownMenuEntry(value: 'vr', label: 'VR'),
                       ],
+                      controller: gameController,
                     ),
                     SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: TextField(
+                        controller: amountController,
                         keyboardType:
                             TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
@@ -75,14 +82,7 @@ class _AddingPageState extends ConsumerState<AddingPage> {
                         style: TextStyle(fontSize: 33),
                       ),
                       icon: Icon(Icons.calendar_month),
-                      onPressed: () {
-                        showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2023),
-                          lastDate: DateTime.now(),
-                        );
-                      },
+                      onPressed: () => _openDatePicker(),
                     ),
                     SizedBox(height: 10),
                   ],
@@ -93,7 +93,7 @@ class _AddingPageState extends ConsumerState<AddingPage> {
                 margin: EdgeInsets.all(8),
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => submit(),
                     child: Text(
                       'Submit',
                       style: TextStyle(fontSize: 25),
@@ -104,5 +104,43 @@ class _AddingPageState extends ConsumerState<AddingPage> {
         ),
       ),
     );
+  }
+
+  void _openDatePicker() async {
+    selectedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2023, 9, 19),
+      firstDate: DateTime(2023),
+      lastDate: DateTime.now(),
+    );
+  }
+
+  submit() {
+    if (gameController.text.isNotEmpty &&
+        amountController.text.isNotEmpty &&
+        selectedDate != null) {
+      // Add the data to the database
+      Income().addIncomeData(
+        employeeUserName: 'employee3name',
+        gameName: gameController.text,
+        amount: amountController.text,
+        date: selectedDate.toString(),
+      );
+
+      print(gameController.text);
+      print(amountController.text);
+      print(selectedDate.toString());
+
+      // Clear the text fields
+      gameController.clear();
+      amountController.clear();
+      selectedDate = null;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please fill all the fields'),
+        ),
+      );
+    }
   }
 }

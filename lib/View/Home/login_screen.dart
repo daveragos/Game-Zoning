@@ -2,8 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gamezoning/Controller/Constants/https_route_consts.dart';
+import 'package:gamezoning/Controller/Routes/approuter.dart';
 import 'package:gamezoning/Model/api.dart';
 import 'package:gamezoning/Model/api_constants.dart';
+import 'package:gamezoning/View/widgets/toggler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,13 +44,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
         );
         //! uploading to the server
-        final result = await API().postRequest(route: 'owners/login', data: {
+        final result =
+            await API().postRequest(route: Constants.OWNERS_LOGIN_URL, data: {
           'email': emailController.text.toString(),
           'password': passwordController.text.toString(),
         });
         // print(jsonDecode(result.toString()));
         if (result.statusCode == 200) {
-//! storing the login info of the user ro local db
+          //! storing the login info of the user to local db
           SharedPreferences pref = await SharedPreferences.getInstance();
           await pref.setString(AppConstants.STORAGE_USER_PROFILE_KEY,
               result.data['user'].toString());
@@ -60,7 +64,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               content: Text(result.data['message']),
             ),
           );
-          GoRouter.of(context).go('/OwnerHome');
+          GoRouter.of(context).go(AppRouter.employeeHomePath);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -78,6 +82,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Toggler(),
               SizedBox(height: 20),
               Icon(Icons.gamepad, size: 100, color: Colors.green),
               SizedBox(height: 20),
@@ -117,6 +122,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Text('Forgot Password?'),
               ),
               SizedBox(height: 20),
+              ElevatedButton(
+                  onPressed: () => context.go(AppRouter.registerPath),
+                  child: Text('already have an account'))
             ],
           ),
         ),

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gamezoning/Controller/Constants/https_route_consts.dart';
 import 'package:gamezoning/Model/api.dart';
 import 'package:go_router/go_router.dart';
 
@@ -43,7 +44,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           ),
         );
         //! uploading to the server
-        final result = await API().postRequest(route: 'owners/register', data: {
+        final result = await API()
+            .postRequest(route: Constants.OWNERS_REGISTER_URL, data: {
           'name': nameController.text.toString(),
           'username': usernameController.text.toString(),
           'email': emailController.text.toString(),
