@@ -51,6 +51,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         });
         // print(jsonDecode(result.toString()));
         if (result.statusCode == 200) {
+          GoRouter.of(context).go(AppRouter.employeeHomePath);
           //! storing the login info of the user to local db
           SharedPreferences pref = await SharedPreferences.getInstance();
           await pref.setString(AppConstants.STORAGE_USER_PROFILE_KEY,
@@ -64,13 +65,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               content: Text(result.data['message']),
             ),
           );
-          GoRouter.of(context).go(AppRouter.employeeHomePath);
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error: ${result.body}'),
-            ),
-          );
+          GoRouter.of(context).go(AppRouter.loginPath);
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Error: ${result.body}'),
+          ));
         }
       }
     }

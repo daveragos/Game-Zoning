@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gamezoning/Controller/Provider/date_provider.dart';
 import 'package:gamezoning/Controller/functions/incomes.dart';
 import 'package:gamezoning/Model/api_constants.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -17,21 +18,31 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   late SharedPreferences preferences;
   bool isLoading = false;
-  var selectedDate = DateTime(2023, 9, 19);
+//getting the selected date from the statenotifier provider
+  //
+
+  DateTime? selectedDate;
+
   double totalIncome = 0.0; // Initialize to 0
   List<Map<String, dynamic>> gameDataList = [];
   @override
   void initState() {
     super.initState();
-    getUserData();
+
+    selectedDate = ref.read(selectedDateProvider);
+    getUserData(selectedDate: selectedDate);
   }
 
-  void getUserData() async {
+  void getUserData({required selectedDate}) async {
     setState(() {
       isLoading = true;
     });
+    //format the selectedDate to yyyy-mm-dd
+    String formattedSelectedDate =
+        DateFormat('yyyy-MM-dd').format(selectedDate!);
+    print('formatted date iiiiiiissssssssss: $formattedSelectedDate');
     var responseData = await Income().getIncomeDataByEmployeeAndDate(
-        employeeUserName: "employee3name", date: selectedDate.toString());
+        employeeUserName: "employee3name", date: formattedSelectedDate);
     print(responseData);
     gameDataList = responseData;
     // Calculate the total income
@@ -159,19 +170,21 @@ class _HomePageState extends ConsumerState<HomePage> {
   void _openDatePicker() async {
     final selectedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime(2023, 9, 19),
+      initialDate: DateTime.now(),
       firstDate: DateTime(2023),
       lastDate: DateTime.now(),
     );
 
     if (selectedDate != null) {
+      ref.watch(selectedDateProvider.notifier).setDate(selectedDate);
+      getUserData(selectedDate: ref.watch(selectedDateProvider));
       // Handle the selected date, e.g., update your UI or make an API call
-      var responseData = await Income().getIncomeDataByEmployeeAndDate(
-          employeeUserName: "employee3name", date: selectedDate.toString());
-      print(responseData);
-      gameDataList = responseData;
-      // Calculate the total income
-      calculateTotalIncome();
+      // var responseData = await Income().getIncomeDataByEmployeeAndDate(
+      //     employeeUserName: "employee3name", date: selectedDate.toString());
+      // print(responseData);
+      // gameDataList = responseData;
+      // // Calculate the total income
+      // calculateTotalIncome();
     }
   }
 
@@ -214,7 +227,9 @@ class _HomePageState extends ConsumerState<HomePage> {
           width: 30,
           backDrawRodData: BackgroundBarChartRodData(
             show: true,
-            toY: maxYValue, // Set y to maxYValue
+            toY: (gameData['amount'] != 0 || gameData['amount'] != null)
+                ? maxYValue
+                : 2500, // Set y to maxYValue
             color: Colors.grey[400],
           ),
           borderRadius: BorderRadius.circular(8),

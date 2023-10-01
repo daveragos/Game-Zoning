@@ -7,7 +7,6 @@ import 'package:gamezoning/View/employee/e_home_page.dart';
 import 'package:gamezoning/View/owner/individual_linetab_page.dart';
 import 'package:gamezoning/View/owner/o_home_page.dart';
 import 'package:gamezoning/View/owner/swapping_page.dart';
-import 'package:gamezoning/View/widgets/homepage_widget.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {

@@ -15,5 +15,8 @@ class Constants {
   static const String GET_INCOME_BY_GAME_AND_DATE_RANGE =
       'incomes/getByEmployeeAndGameAndDateRange';
 
+  static const String GET_INCOME_BY_WEEKLY_DATE =
+      'incomes/getByEmployeeAndWeeklyDate';
+
   static const String ADD_INCOME = 'incomes';
 }

@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gamezoning/Controller/Provider/date_provider.dart';
 import 'package:gamezoning/Controller/functions/incomes.dart';
+import 'package:intl/intl.dart';
 
 class AddingPage extends ConsumerStatefulWidget {
   const AddingPage({super.key});
@@ -17,7 +19,13 @@ class _AddingPageState extends ConsumerState<AddingPage> {
   TextEditingController gameController = TextEditingController(text: '');
 
   @override
+  void initState() {
+    selectedDate = ref.read(selectedDateProvider);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final selectedDateWatcher = ref.watch(selectedDateProvider);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -78,8 +86,8 @@ class _AddingPageState extends ConsumerState<AddingPage> {
                     SizedBox(height: 10),
                     TextButton.icon(
                       label: Text(
-                        'Pick Date',
-                        style: TextStyle(fontSize: 33),
+                        'Currently Picked Date : ${DateFormat('yyyy-MM-dd').format(selectedDateWatcher)}',
+                        style: TextStyle(fontSize: 23),
                       ),
                       icon: Icon(Icons.calendar_month),
                       onPressed: () => _openDatePicker(),
@@ -93,7 +101,7 @@ class _AddingPageState extends ConsumerState<AddingPage> {
                 margin: EdgeInsets.all(8),
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
-                    onPressed: () => submit(),
+                    onPressed: () => submit(selectedDate: selectedDateWatcher),
                     child: Text(
                       'Submit',
                       style: TextStyle(fontSize: 25),
@@ -109,22 +117,29 @@ class _AddingPageState extends ConsumerState<AddingPage> {
   void _openDatePicker() async {
     selectedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime(2023, 9, 19),
+      initialDate: DateTime.now(),
       firstDate: DateTime(2023),
       lastDate: DateTime.now(),
     );
+    if (selectedDate != null) {
+      ref.watch(selectedDateProvider.notifier).setDate(selectedDate!);
+    } else {
+      ref.watch(selectedDateProvider.notifier).resetDate();
+    }
   }
 
-  submit() {
-    if (gameController.text.isNotEmpty &&
-        amountController.text.isNotEmpty &&
-        selectedDate != null) {
+  submit({required selectedDate}) {
+    if (gameController.text.isNotEmpty && amountController.text.isNotEmpty) {
       // Add the data to the database
+      //format the selectedDate to yyyy-mm-dd
+      String formattedSelectedDate =
+          DateFormat('yyyy-MM-dd').format(selectedDate);
+
       Income().addIncomeData(
         employeeUserName: 'employee3name',
         gameName: gameController.text,
         amount: amountController.text,
-        date: selectedDate.toString(),
+        date: formattedSelectedDate,
       );
 
       print(gameController.text);
