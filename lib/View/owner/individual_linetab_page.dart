@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gamezoning/Controller/Provider/tab_provider.dart';
+import 'package:gamezoning/Controller/functions/weekly_data.dart';
 import 'package:gamezoning/View/owner/linechart_widget.dart';
 import 'package:gamezoning/View/owner/weekly_page.dart';
 
@@ -15,6 +16,13 @@ class IndividualLineTabPage extends ConsumerStatefulWidget {
 
 class _IndividualLineTabPageState extends ConsumerState<IndividualLineTabPage>
     with TickerProviderStateMixin {
+  final weeklyData = WeeklyData();
+  @override
+  void initState() async {
+    super.initState();
+    getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     final tabController = TabController(length: 6, vsync: this);
@@ -85,6 +93,17 @@ class _IndividualLineTabPageState extends ConsumerState<IndividualLineTabPage>
         ),
       ),
     );
+  }
+
+  getData() async {
+    await weeklyData.getData;
+    final state = weeklyData.state;
+    print(
+        'EXTRACTED DATA IS : IIIIIIIIIIIIIIIIIIIII ||||||||| ${state['gameGroupData']}');
+    print('TOTAL AMOUNT IS : ${state['totalAmount']}');
+    print('GAME PERCENTAGES ARE : ${state['gamePercentages']}');
+    print(
+        'WWWWWWWWEEEEEEEEEEEKKKKKKKKLLLLLLLLLLLYYYYYYYYYY DATA :::::::: $weeklyData');
   }
 }
 

@@ -17,12 +17,6 @@ class _OwnerHomeState extends ConsumerState<OwnerHome> {
     return const Scaffold(
       appBar: AppBarWidget(),
       drawer: DrawerWidget(),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () => context.go(
-      //     AppRouter.addingPagePath,
-      //   ),
-      //   child: const Icon(Icons.add),
-      // ),
       body: HomePage(),
     );
   }

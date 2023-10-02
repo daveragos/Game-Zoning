@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:gamezoning/Controller/Constants/https_route_consts.dart';
 import 'package:gamezoning/Model/api_constants.dart';
+import 'package:intl/intl.dart';
 
 class Income {
   //function for getting income data with employee
@@ -122,5 +123,43 @@ class Income {
       'amount': amount,
       'date': date,
     });
+  }
+
+//function for getting weekly data
+  Future<dynamic> getAllWeeklyData() async {
+    //format the selectedDate to yyyy-mm-dd
+    String formattedSelectedDate =
+        DateFormat('yyyy-MM-dd').format(DateTime(2023, 9, 27));
+
+    //use dio package
+    final dio = Dio();
+    var response = await dio.post(
+        AppConstants.API_URL + Constants.GET_INCOME_BY_WEEKLY_DATE,
+        data: {
+          'employee_username': 'employee3name',
+          'date': formattedSelectedDate,
+        });
+
+    //check all possible response types and return accordingly
+    if (response.statusCode == 200) {
+      // Response data is already parsed as a Map
+      Map<String, dynamic> jsonResponse = response.data;
+
+      // Now you can access and process the data as needed
+      List<dynamic> dataList = jsonResponse['data'];
+      List<Map<String, dynamic>> gameDataList = dataList.map((item) {
+        return {
+          'game_name': item['game_name'],
+          'amount': double.parse(item['amount']),
+          'date': item['date']
+        };
+      }).toList();
+
+      // Print or use the gameDataList here
+      // print(gameDataList);
+      return gameDataList;
+    } else {
+      print('Request failed with status: ${response.statusCode}');
+    }
   }
 }

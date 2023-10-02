@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gamezoning/Controller/Routes/approuter.dart';
 import 'package:go_router/go_router.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
@@ -29,7 +30,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         ),
         IconButton(
           onPressed: () {
-            context.go('/OwnerHome');
+            context.go(AppRouter.ownerHomePath);
           },
           icon: const Icon(Icons.notifications),
         ),

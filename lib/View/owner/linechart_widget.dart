@@ -143,7 +143,7 @@ class LineChartWidget extends ConsumerWidget {
     );
   }
 
-  dynamic linebarsdata(int tabbed) {
+  List<LineChartBarData> linebarsdata(int tabbed) {
     switch (tabbed) {
       case 0:
         return [
@@ -279,6 +279,24 @@ class LineChartWidget extends ConsumerWidget {
           )
         ];
       default:
+        return [
+          LineChartBarData(
+            spots: const [
+              FlSpot(0, 0),
+              FlSpot(1, 1),
+              FlSpot(2, 2),
+              FlSpot(3, 3),
+              FlSpot(4, 4),
+              FlSpot(5, 5),
+              FlSpot(6, 6),
+            ],
+            isCurved: true,
+            color: Colors.pink,
+            barWidth: 3,
+            isStrokeCapRound: true,
+            dotData: const FlDotData(show: false),
+          )
+        ];
     }
   }
 }
