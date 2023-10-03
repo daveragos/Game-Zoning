@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gamezoning/Controller/Provider/tab_provider.dart';
+import 'package:gamezoning/Controller/functions/weekly_data.dart';
 
 class PieChartSample2 extends ConsumerStatefulWidget {
   const PieChartSample2({super.key});
@@ -40,87 +41,53 @@ class _PieChart2State extends ConsumerState<PieChartSample2> {
   }
 
   List<PieChartSectionData> showingSections() {
-    return List.generate(6, (i) {
-      final isTouched = i == ref.watch(selectedTabProvider);
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 50.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-      switch (i) {
-        case 0:
+    var weeklyData =
+        ref.read(weeklyDataProvider.notifier).state['gamePercentages'];
+    print(weeklyData);
+    return weeklyData.entries
+        .map((entry) {
+          final index = weeklyData.entries.toList().indexOf(entry);
+          final isTouched = index == ref.watch(selectedTabProvider);
+          final fontSize = isTouched ? 20.0 : 16.0;
+          final radius = isTouched ? 60.0 : 50.0;
+          const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+          final value = double.parse(entry.value.toStringAsFixed(2));
+          final color = _getColorFromName(entry.key);
           return PieChartSectionData(
-            color: Colors.blue,
-            value: 40,
-            title: '40%',
+            color: color,
+            value: value,
+            title: '${value.toString()}%',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
+              color: const Color(0xffffffff),
               shadows: shadows,
             ),
+            badgeWidget: null,
+            badgePositionPercentageOffset: .98,
           );
-        case 1:
-          return PieChartSectionData(
-            color: Colors.yellow,
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              shadows: shadows,
-            ),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: Colors.purple,
-            value: 25,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              shadows: shadows,
-            ),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: Colors.green,
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              shadows: shadows,
-            ),
-          );
-        case 4:
-          return PieChartSectionData(
-            color: Colors.red,
-            value: 35,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              shadows: shadows,
-            ),
-          );
-        case 5:
-          return PieChartSectionData(
-            color: Colors.orange,
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              shadows: shadows,
-            ),
-          );
-        default:
-          throw Error();
-      }
-    });
+        })
+        .toList()
+        .cast<PieChartSectionData>();
+  }
+
+  Color _getColorFromName(String name) {
+    switch (name) {
+      case 'Betting':
+        return Colors.green;
+      case 'DSTV':
+        return Colors.blue;
+      case 'Coffee':
+        return Colors.yellow;
+      case 'Pool':
+        return Colors.red;
+      case 'PS':
+        return Colors.purple;
+      case 'VR':
+        return Colors.grey;
+      default:
+        return Colors.black;
+    }
   }
 }

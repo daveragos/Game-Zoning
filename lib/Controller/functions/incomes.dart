@@ -129,7 +129,7 @@ class Income {
   Future<dynamic> getAllWeeklyData() async {
     //format the selectedDate to yyyy-mm-dd
     String formattedSelectedDate =
-        DateFormat('yyyy-MM-dd').format(DateTime(2023, 9, 27));
+        DateFormat('yyyy-MM-dd').format(DateTime.now());
 
     //use dio package
     final dio = Dio();
