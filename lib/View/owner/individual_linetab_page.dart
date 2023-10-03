@@ -16,9 +16,10 @@ class IndividualLineTabPage extends ConsumerStatefulWidget {
 
 class _IndividualLineTabPageState extends ConsumerState<IndividualLineTabPage>
     with TickerProviderStateMixin {
-  final weeklyData = WeeklyData();
+  var weeklyData;
+
   @override
-  void initState() async {
+  void initState() {
     super.initState();
     getData();
   }
@@ -96,14 +97,9 @@ class _IndividualLineTabPageState extends ConsumerState<IndividualLineTabPage>
   }
 
   getData() async {
-    await weeklyData.getData;
-    final state = weeklyData.state;
-    print(
-        'EXTRACTED DATA IS : IIIIIIIIIIIIIIIIIIIII ||||||||| ${state['gameGroupData']}');
-    print('TOTAL AMOUNT IS : ${state['totalAmount']}');
-    print('GAME PERCENTAGES ARE : ${state['gamePercentages']}');
-    print(
-        'WWWWWWWWEEEEEEEEEEEKKKKKKKKLLLLLLLLLLLYYYYYYYYYY DATA :::::::: $weeklyData');
+    await ref.read(weeklyDataProvider.notifier).getData();
+    weeklyData = ref.read(weeklyDataProvider.notifier).state;
+    print(weeklyData['gameGroupData']);
   }
 }
 

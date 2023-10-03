@@ -1,6 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gamezoning/Controller/functions/incomes.dart';
 
+//provider
+final weeklyDataProvider =
+    StateNotifierProvider<WeeklyData, Map<String, dynamic>>(
+        (ref) => WeeklyData());
+
 class WeeklyData extends StateNotifier<Map<String, dynamic>> {
   WeeklyData() : super({});
 
