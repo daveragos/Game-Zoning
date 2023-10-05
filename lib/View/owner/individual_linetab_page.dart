@@ -8,16 +8,16 @@ import 'package:gamezoning/View/owner/side_detail_page.dart';
 import 'package:gamezoning/View/owner/weekly_pie_page.dart';
 import 'package:intl/intl.dart';
 
-class IndividualLineTabPage extends ConsumerStatefulWidget {
-  const IndividualLineTabPage({super.key});
+class IndividualLineTab extends ConsumerStatefulWidget {
+  const IndividualLineTab({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _IndividualLineTabPageState();
+  ConsumerState<IndividualLineTab> createState() => _IndividualLineTabState();
 }
 
-class _IndividualLineTabPageState extends ConsumerState<IndividualLineTabPage>
-    with TickerProviderStateMixin {
+class _IndividualLineTabState extends ConsumerState<IndividualLineTab>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
   var weeklyData;
   bool isLoading = false;
 
@@ -25,11 +25,24 @@ class _IndividualLineTabPageState extends ConsumerState<IndividualLineTabPage>
   void initState() {
     super.initState();
     getData();
+    _tabController = TabController(length: 6, vsync: this);
+    _tabController.addListener(_handleTabSelection);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  void _handleTabSelection() {
+    ref
+        .watch(selectedTabProvider.notifier)
+        .setSelectedTab(_tabController.index);
   }
 
   @override
   Widget build(BuildContext context) {
-    final tabController = TabController(length: 6, vsync: this);
     return SafeArea(
       child: isLoading
           ? Center(child: CircularProgressIndicator())
@@ -39,7 +52,7 @@ class _IndividualLineTabPageState extends ConsumerState<IndividualLineTabPage>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TabBar(
-                    controller: tabController,
+                    controller: _tabController,
                     isScrollable: true,
                     onTap: (value) {
                       ref
@@ -78,15 +91,11 @@ class _IndividualLineTabPageState extends ConsumerState<IndividualLineTabPage>
                   ),
                   Flexible(
                     child: TabBarView(
-                      controller: tabController,
-                      children: const [
-                        LineWidget(),
-                        LineWidget(),
-                        LineWidget(),
-                        LineWidget(),
-                        LineWidget(),
-                        LineWidget(),
-                      ],
+                      controller: _tabController,
+                      children: List.generate(
+                        _tabController.length,
+                        (index) => const LineWidget(),
+                      ),
                     ),
                   ),
                   Row(

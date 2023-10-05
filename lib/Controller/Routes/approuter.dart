@@ -59,7 +59,7 @@ class AppRouter {
             path: lineChartPagePath,
             pageBuilder: (context, state) {
               return NoTransitionPage(
-                child: IndividualLineTabPage(),
+                child: IndividualLineTab(),
               );
             },
           ),

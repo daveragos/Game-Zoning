@@ -42,9 +42,10 @@ class _PieChart2State extends ConsumerState<PieChartSample2> {
   }
 
   List<PieChartSectionData> showingSections() {
-    final data = ref.read(weeklyDataProvider.notifier).state['gamePercentages'];
-    print('|||||||||||||||||||||||| $data');
-    return data.entries
+    final data = ref.read(weeklyDataProvider.notifier).state;
+    print('|||||||||||||||||||||||| ${data['gameDataList']}');
+    return data['gamePercentages']
+        .entries
         .map((entry) {
           final index = data.entries.toList().indexOf(entry);
           final isTouched = index == ref.watch(selectedTabProvider);

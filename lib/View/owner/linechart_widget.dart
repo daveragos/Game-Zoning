@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gamezoning/Controller/Provider/tab_provider.dart';
 import 'package:gamezoning/Controller/functions/weekly_data.dart';
+import 'package:intl/intl.dart';
 
 class LineChartWidget extends ConsumerWidget {
   LineChartWidget({
@@ -19,16 +20,7 @@ class LineChartWidget extends ConsumerWidget {
     if (lineData == null) {
       return const SizedBox();
     }
-    print(lineData); // Print the type of lineData
-    Map<String, dynamic> parseData(String data) {
-      // Remove the curly braces at the beginning and end to get valid JSON
-      String jsonString = data.substring(1, data.length - 1);
-      jsonString = jsonString.replaceAll("}, {", "},\n{");
 
-      return json.decode("{$jsonString}");
-    }
-
-    String maxKey;
     double maxAmount = double.negativeInfinity;
 
     lineData.forEach((key, value) {
@@ -36,10 +28,11 @@ class LineChartWidget extends ConsumerWidget {
         double amount = entry["amount"];
         if (amount > maxAmount) {
           maxAmount = amount;
-          maxKey = key;
         }
       }
     });
+    maxAmount = ((maxAmount + 1000) / 1000).ceilToDouble() * 1000;
+    print('MAX AMOUNT : $maxAmount');
     return LineChart(
       LineChartData(
         minX: 0,
@@ -103,6 +96,7 @@ class LineChartWidget extends ConsumerWidget {
             ),
           ),
           leftTitles: AxisTitles(
+            axisNameSize: 5,
             sideTitles: SideTitles(
               showTitles: true,
               getTitlesWidget: (value, meta) {
@@ -112,8 +106,9 @@ class LineChartWidget extends ConsumerWidget {
                     fontSize: 10);
                 // Scale up the value by a factor of 1000 to get the original amount value
                 final amount = value * 1000;
+                final formatter = NumberFormat.compact();
 
-                return Text(amount.toInt().toString() + 'k');
+                return Text(formatter.format(amount));
               },
               reservedSize: 28,
             ),
