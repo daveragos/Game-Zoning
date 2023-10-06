@@ -32,9 +32,15 @@ class _AuthCheckState extends ConsumerState<AuthCheck> {
             final token = snapshot.data!
                 .getString(AppConstants.STORAGE_USER_PROFILE_TOKEN);
             if (token != null) {
-              return SwappingPage(
-                child: OwnerHome(),
-              );
+              if (snapshot.data!
+                      .getString(AppConstants.STORAGE_USER_PROFILE_LABEL) ==
+                  "owner") {
+                return SwappingPage(
+                  child: OwnerHome(),
+                );
+              } else {
+                return EmployeeHome();
+              }
             } else {
               return LoginScreen();
             }

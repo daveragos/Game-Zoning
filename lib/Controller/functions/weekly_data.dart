@@ -24,6 +24,8 @@ class WeeklyData extends StateNotifier<Map<String, dynamic>> {
       }
 
       gameGroupData[gameName]?.add({'amount': amount, 'date': date});
+      gameGroupData[gameName]?.sort((a, b) => a['date'].compareTo(
+          b['date'])); // Sort the game data items by date in ascending order
     }
 
     double totalAmount = 0;

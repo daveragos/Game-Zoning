@@ -45,7 +45,7 @@ class _IndividualLineTabState extends ConsumerState<IndividualLineTab>
   Widget build(BuildContext context) {
     return SafeArea(
       child: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : DefaultTabController(
               length: 6,
               child: Column(

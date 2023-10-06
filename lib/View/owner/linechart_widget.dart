@@ -131,7 +131,7 @@ class LineChartWidget extends ConsumerWidget {
     final data = lineData.values.toList()[tabbed];
     final spots = data.map((d) {
       final date = DateTime.parse(d['date']);
-      final dateValue = date.weekday - 1;
+      final dateValue = date.weekday - 1; // Start from 0 instead of 6
       final amount =
           d['amount'] / 1000; // Scale down the amount by a factor of 1000
       return FlSpot(dateValue.toDouble(), amount);
