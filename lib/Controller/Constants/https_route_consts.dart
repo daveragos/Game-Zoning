@@ -6,6 +6,8 @@ class Constants {
   static const String OWNERS_REGISTER_URL = 'owners/register';
   static const String EMPLOYEES_LOGIN_URL = 'employees/login';
   static const String EMPLOYEES_REGISTER_URL = 'employees/register';
+  static const String GET_EMPLOYEES_BY_OWNERUSERNAME =
+      'employees/getEmployeesByOwnerUsername';
 
   static const String GET_INCOME_BY_EMPLOYEES = 'incomes/getByEmployee';
   static const String GET_INCOME_BY_DATE = 'incomes/getByEmployeeAndDate';

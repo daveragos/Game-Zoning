@@ -5,6 +5,7 @@ import 'package:gamezoning/View/Home/register_page.dart';
 import 'package:gamezoning/View/employee/adding_page.dart';
 import 'package:gamezoning/View/employee/e_home_page.dart';
 import 'package:gamezoning/View/owner/individual_linetab_page.dart';
+import 'package:gamezoning/View/owner/landing_page.dart';
 import 'package:gamezoning/View/owner/o_home_page.dart';
 import 'package:gamezoning/View/owner/swapping_page.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +17,7 @@ class AppRouter {
   static const String addingPagePath = '/addingpage';
   static const String lineChartPagePath = '/LineChartPage';
   static const String employeeHomePath = '/EmployeeHome';
+  static const String landingPath = '/OwnerLandingPage';
 
   // GoRouter configuration
   var router = GoRouter(
@@ -46,6 +48,11 @@ class AppRouter {
         name: 'EmployeeHome',
         path: employeeHomePath,
         builder: (context, state) => const EmployeeHome(),
+      ),
+      GoRoute(
+        name: 'LandingPage',
+        path: landingPath,
+        builder: (context, state) => OwnerLandingPage(),
       ),
       //the bottom navigation bar
       ShellRoute(

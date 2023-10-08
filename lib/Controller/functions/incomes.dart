@@ -162,4 +162,30 @@ class Income {
       print('Request failed with status: ${response.statusCode}');
     }
   }
+
+  Future<dynamic> getAllEmployee() async {
+    final dio = Dio();
+
+    var response = await dio.post(
+        AppConstants.API_URL + Constants.GET_EMPLOYEES_BY_OWNERUSERNAME,
+        data: {
+          'owner_username': 'owner3name',
+        });
+
+    //check all possible response types and return accordingly
+    if (response.statusCode == 200) {
+      // Response data is already parsed as a Map
+      Map<String, dynamic> jsonResponse = response.data;
+
+      // getting the 'data' part from response and the 'username' from 'data'
+      List<dynamic> dataList = jsonResponse['data'];
+      List<dynamic> employeeList = dataList.map((item) {
+        return item['username'];
+      }).toList();
+      print('perfectly working api and here is employee: $employeeList');
+      return employeeList;
+    } else {
+      print('Request failed with status: ${response.statusCode}');
+    }
+  }
 }
