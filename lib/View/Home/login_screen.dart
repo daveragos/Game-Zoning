@@ -66,11 +66,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           await pref.setString(AppConstants.STORAGE_USER_PROFILE_LABEL,
               result.data['label'].toString());
           print(pref.getString(AppConstants.STORAGE_USER_PROFILE_KEY));
-          if (isOwner) {
-            GoRouter.of(context).go(AppRouter.ownerHomePath);
-          } else {
-            GoRouter.of(context).go(AppRouter.employeeHomePath);
-          }
+
+          GoRouter.of(context).go(AppRouter.landingPath);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(result.data['message']),

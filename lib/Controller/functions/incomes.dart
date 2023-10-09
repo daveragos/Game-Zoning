@@ -163,29 +163,34 @@ class Income {
     }
   }
 
-  Future<dynamic> getAllEmployee() async {
-    final dio = Dio();
+  Future<List<String>> getEmployeesUsernames() async {
+    final dio = Dio(); // Create a Dio instance
+    List<String> usernames = [];
 
-    var response = await dio.post(
-        AppConstants.API_URL + Constants.GET_EMPLOYEES_BY_OWNERUSERNAME,
-        data: {
-          'owner_username': 'owner3name',
-        });
+    try {
+      // Replace 'your-api-url' with your actual API URL
+      final response =
+          await dio.get('${Constants.BASE_URL}employees/owner/owner3name');
 
-    //check all possible response types and return accordingly
-    if (response.statusCode == 200) {
-      // Response data is already parsed as a Map
-      Map<String, dynamic> jsonResponse = response.data;
+      if (response.statusCode == 200) {
+        // Request was successful
+        final responseData = response.data;
 
-      // getting the 'data' part from response and the 'username' from 'data'
-      List<dynamic> dataList = jsonResponse['data'];
-      List<dynamic> employeeList = dataList.map((item) {
-        return item['username'];
-      }).toList();
-      print('perfectly working api and here is employee: $employeeList');
-      return employeeList;
-    } else {
-      print('Request failed with status: ${response.statusCode}');
+        // Extract usernames from the response data
+        for (var employee in responseData['data']) {
+          usernames.add(employee['username']);
+        }
+
+        print(usernames);
+      } else {
+        // Handle errors based on the response status code
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle exceptions (e.g., network errors)
+      print('Exception: $e');
     }
+
+    return usernames;
   }
 }
