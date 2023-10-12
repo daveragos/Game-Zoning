@@ -135,10 +135,8 @@ class _AddingPageState extends ConsumerState<AddingPage> {
       //format the selectedDate to yyyy-mm-dd
       String formattedSelectedDate =
           DateFormat('yyyy-MM-dd').format(selectedDate);
-      final selectedEmployee = ref.read(employeeProvider.notifier).state;
 
       Income().addIncomeData(
-        employeeUserName: selectedEmployee,
         gameName: gameController.text,
         amount: amountController.text,
         date: formattedSelectedDate,

@@ -1,16 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gamezoning/Controller/Constants/https_route_consts.dart';
-import 'package:gamezoning/Controller/functions/employee_getter.dart';
+import 'package:gamezoning/Controller/Provider/date_provider.dart';
 import 'package:gamezoning/Model/api_constants.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Income {
   //function for getting income data with employee
-  Future<dynamic> getIncomeDataByEmployee(
-      {required String employeeUserName}) async {
-    Ref? ref;
-    final selectedEmployee = ref!.read(employeeProvider.notifier).state;
+  Future<dynamic> getIncomeDataByEmployee() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final selectedEmployee =
+        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
     //use dio package
     final dio = Dio();
     return await dio
@@ -20,13 +21,15 @@ class Income {
   }
 
   //function for getting income data with employee and date
-  Future<dynamic> getIncomeDataByEmployeeAndDate(
-      {required String employeeUserName, required String date}) async {
+  Future<dynamic> getIncomeDataByEmployeeAndDate({required String date}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final selectedEmployee =
+        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
     //use dio package
     final dio = Dio();
     var response = await dio
         .post(AppConstants.API_URL + Constants.GET_INCOME_BY_DATE, data: {
-      'employee_username': 'employee3name',
+      'employee_username': selectedEmployee,
       'date': date,
     });
 
@@ -54,9 +57,10 @@ class Income {
 
   //function for getting income data with employee and game
   Future<dynamic> getIncomeDataByEmployeeAndGame(
-      {required String employeeUserName, required String gameName}) async {
-    Ref? ref;
-    final selectedEmployee = ref!.read(employeeProvider.notifier).state;
+      {required String gameName}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final selectedEmployee =
+        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
     //use dio package
     final dio = Dio();
     return await dio
@@ -68,11 +72,10 @@ class Income {
 
   //function for getting income data with employee and game and date
   Future<dynamic> getIncomeDataByEmployeeAndGameAndDate(
-      {required String employeeUserName,
-      required String gameName,
-      required String date}) async {
-    Ref? ref;
-    final selectedEmployee = ref!.read(employeeProvider.notifier).state;
+      {required String gameName, required String date}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final selectedEmployee =
+        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
     //use dio package
     final dio = Dio();
     return await dio.post(
@@ -86,11 +89,10 @@ class Income {
 
   //function for getting income data with employee and date range
   Future<dynamic> getIncomeDataByEmployeeAndDateRange(
-      {required String employeeUserName,
-      required String startDate,
-      required String endDate}) async {
-    Ref? ref;
-    final selectedEmployee = ref!.read(employeeProvider.notifier).state;
+      {required String startDate, required String endDate}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final selectedEmployee =
+        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
     //use dio package
     final dio = Dio();
     return await dio
@@ -103,12 +105,12 @@ class Income {
 
   //function for getting income data with employee and game and date range
   Future<dynamic> getIncomeDataByEmployeeAndGameAndDateRange(
-      {required String employeeUserName,
-      required String gameName,
+      {required String gameName,
       required String startDate,
       required String endDate}) async {
-    Ref? ref;
-    final selectedEmployee = ref!.read(employeeProvider.notifier).state;
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final selectedEmployee =
+        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
     //use dio package
     final dio = Dio();
     return await dio.post(
@@ -123,12 +125,12 @@ class Income {
 
   //function for storing income data
   Future<dynamic> addIncomeData(
-      {required String employeeUserName,
-      required String gameName,
+      {required String gameName,
       required String amount,
       required String date}) async {
-    Ref? ref;
-    final selectedEmployee = ref!.read(employeeProvider.notifier).state;
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final selectedEmployee =
+        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
     //use dio package
     final dio = Dio();
     return await dio.post(AppConstants.API_URL + Constants.ADD_INCOME, data: {
@@ -140,10 +142,15 @@ class Income {
   }
 
 //function for getting weekly data
-  Future<dynamic> getAllWeeklyData({selectedEmployee}) async {
+  Future<dynamic> getAllWeeklyData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final selectedEmployee =
+        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
+    Ref? ref;
+    final selectedDate = ref!.watch(selectedDateProvider);
     //format the selectedDate to yyyy-mm-dd
     String formattedSelectedDate =
-        DateFormat('yyyy-MM-dd').format(DateTime(2023, 09, 27));
+        DateFormat('yyyy-MM-dd').format(selectedDate);
     //use dio package
     final dio = Dio();
     var response = await dio.post(
@@ -179,11 +186,13 @@ class Income {
   Future<List<String>> getEmployeesUsernames() async {
     final dio = Dio(); // Create a Dio instance
     List<String> usernames = [];
-
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final owner =
+        pref.getString(AppConstants.STORAGE_USER_PROFILE_owner_username)!;
     try {
       // Replace 'your-api-url' with your actual API URL
       final response =
-          await dio.get('${Constants.BASE_URL}employees/owner/owner3name');
+          await dio.get('${Constants.BASE_URL}employees/owner/$owner');
 
       if (response.statusCode == 200) {
         // Request was successful

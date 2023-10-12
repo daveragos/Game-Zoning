@@ -118,10 +118,7 @@ class _IndividualLineTabState extends ConsumerState<IndividualLineTab>
     setState(() {
       isLoading = true;
     });
-    final selectedEmployee = ref.read(employeeProvider.notifier).state;
-    await ref
-        .read(weeklyDataProvider.notifier)
-        .getData(selectedEmployee: selectedEmployee);
+    await ref.read(weeklyDataProvider.notifier).getData();
     weeklyData = ref.read(weeklyDataProvider.notifier).state;
     print(weeklyData['gameGroupData']);
     setState(() {

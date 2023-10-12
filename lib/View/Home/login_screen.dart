@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gamezoning/Controller/Constants/https_route_consts.dart';
 import 'package:gamezoning/Controller/Routes/approuter.dart';
 import 'package:gamezoning/Controller/functions/employee_getter.dart';
+import 'package:gamezoning/Controller/functions/owner_getter.dart';
 import 'package:gamezoning/Model/api.dart';
 import 'package:gamezoning/Model/api_constants.dart';
 import 'package:gamezoning/View/widgets/toggler.dart';
@@ -72,19 +73,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               'employees info saved: ${pref.getString(AppConstants.STORAGE_USER_PROFILE_KEY)}');
 
           print('just the data from response :${result.data['user']}');
+          // Parse the JSON response
+          Map<String, dynamic> responseMap = result.data;
+          // Extract the username
+          String username = responseMap['user']['username'];
           if (isOwner) {
+            ref.watch(ownerProvider.notifier).setName(username);
+            final selectedUsername = ref.watch(ownerProvider.notifier).state;
+            await pref.setString(
+                AppConstants.STORAGE_USER_PROFILE_owner_username,
+                selectedUsername);
             GoRouter.of(context).go(AppRouter.landingPath);
           } else {
-// Parse the JSON response
-            Map<String, dynamic> responseMap = json.decode(result.data);
-
-// Extract the username
-            String username = responseMap['user']['username'];
-
-// Use the extracted username
             ref.watch(employeeProvider.notifier).setName(username);
-
-            ref.watch(employeeProvider.notifier).setName(username);
+            final selectedUsername = ref.watch(employeeProvider.notifier).state;
+            await pref.setString(
+                AppConstants.STORAGE_USER_PROFILE_employee_username,
+                selectedUsername);
             GoRouter.of(context).go(AppRouter.employeeHomePath);
           }
           ScaffoldMessenger.of(context).showSnackBar(

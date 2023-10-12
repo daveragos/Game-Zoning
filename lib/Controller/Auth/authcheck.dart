@@ -36,7 +36,14 @@ class _AuthCheckState extends ConsumerState<AuthCheck> {
               if (snapshot.data!
                       .getString(AppConstants.STORAGE_USER_PROFILE_LABEL) ==
                   "owner") {
-                return OwnerLandingPage();
+                if (snapshot.data!.containsKey(
+                    AppConstants.STORAGE_USER_PROFILE_owner_username)) {
+                  return SwappingPage(
+                    child: OwnerHome(),
+                  );
+                } else {
+                  return OwnerLandingPage();
+                }
               } else {
                 return EmployeeHome();
               }

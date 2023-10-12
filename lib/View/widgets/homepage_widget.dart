@@ -18,6 +18,7 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   late SharedPreferences preferences;
+  late String selectedEmployee;
   bool isLoading = false;
 //getting the selected date from the statenotifier provider
   //
@@ -42,15 +43,17 @@ class _HomePageState extends ConsumerState<HomePage> {
     //format the selectedDate to yyyy-mm-dd
     String formattedSelectedDate =
         DateFormat('yyyy-MM-dd').format(selectedDate!);
-    final selectedEmployee = ref.read(employeeProvider.notifier).state;
     print('formatted date iiiiiiissssssssss: $formattedSelectedDate');
-    var responseData = await Income().getIncomeDataByEmployeeAndDate(
-        employeeUserName: selectedEmployee, date: formattedSelectedDate);
+    var responseData = await Income()
+        .getIncomeDataByEmployeeAndDate(date: formattedSelectedDate);
     print(responseData);
     gameDataList = responseData;
     // Calculate the total income
     calculateTotalIncome();
     preferences = await SharedPreferences.getInstance();
+    selectedEmployee = preferences
+        .getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
+
     setState(() {
       isLoading = false;
     });
@@ -58,7 +61,6 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedEmployee = ref.watch(employeeProvider.notifier).state;
     return SingleChildScrollView(
       child: Center(
         child: isLoading

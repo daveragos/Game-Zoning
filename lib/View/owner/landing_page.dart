@@ -5,11 +5,13 @@ import 'package:gamezoning/Controller/Routes/approuter.dart';
 import 'package:gamezoning/Controller/functions/employee_getter.dart';
 import 'package:gamezoning/Controller/functions/incomes.dart';
 import 'package:gamezoning/Controller/functions/weekly_data.dart';
+import 'package:gamezoning/Model/api_constants.dart';
 import 'package:gamezoning/View/owner/o_home_page.dart';
 import 'package:gamezoning/View/owner/swapping_page.dart';
 import 'package:gamezoning/View/widgets/appbar_widget.dart';
 import 'package:gamezoning/View/widgets/drawer_widget.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OwnerLandingPage extends ConsumerStatefulWidget {
   @override
@@ -19,6 +21,7 @@ class OwnerLandingPage extends ConsumerStatefulWidget {
 class _OwnerLandingPageState extends ConsumerState<OwnerLandingPage> {
   bool isLoading = false;
   List<String> employees = [];
+  late SharedPreferences pref;
 
   @override
   void initState() {
@@ -32,6 +35,7 @@ class _OwnerLandingPageState extends ConsumerState<OwnerLandingPage> {
 
     try {
       employees = await Income().getEmployeesUsernames();
+      pref = await SharedPreferences.getInstance();
     } catch (e) {
       print('Error fetching data: $e');
     } finally {
@@ -71,6 +75,13 @@ class _OwnerLandingPageState extends ConsumerState<OwnerLandingPage> {
                                     ref
                                         .watch(employeeProvider.notifier)
                                         .setName(employees[index]);
+                                    final selectedUsername = ref
+                                        .watch(employeeProvider.notifier)
+                                        .state;
+                                    pref.setString(
+                                        AppConstants
+                                            .STORAGE_USER_PROFILE_employee_username,
+                                        selectedUsername);
                                     GoRouter.of(context)
                                         .go(AppRouter.ownerHomePath);
                                   },

@@ -8,6 +8,7 @@ class API {
   }) async {
     //use dio package
     final dio = Dio();
+    //handle all status
     return await dio.post(AppConstants.API_URL + route, data: data);
   }
 
