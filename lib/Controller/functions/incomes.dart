@@ -142,12 +142,10 @@ class Income {
   }
 
 //function for getting weekly data
-  Future<dynamic> getAllWeeklyData() async {
+  Future<dynamic> getAllWeeklyData({required selectedDate}) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     final selectedEmployee =
         pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
-    Ref? ref;
-    final selectedDate = ref!.watch(selectedDateProvider);
     //format the selectedDate to yyyy-mm-dd
     String formattedSelectedDate =
         DateFormat('yyyy-MM-dd').format(selectedDate);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gamezoning/Controller/Provider/date_provider.dart';
 import 'package:gamezoning/Controller/Provider/tab_provider.dart';
 import 'package:gamezoning/Controller/functions/employee_getter.dart';
 import 'package:gamezoning/Controller/functions/weekly_data.dart';
@@ -21,10 +22,11 @@ class _IndividualLineTabState extends ConsumerState<IndividualLineTab>
   late TabController _tabController;
   var weeklyData;
   bool isLoading = false;
-
+  DateTime? selectedDate;
   @override
   void initState() {
     super.initState();
+    selectedDate = ref.read(selectedDateProvider);
     getData();
     _tabController = TabController(length: 6, vsync: this);
     _tabController.addListener(_handleTabSelection);
@@ -44,6 +46,7 @@ class _IndividualLineTabState extends ConsumerState<IndividualLineTab>
 
   @override
   Widget build(BuildContext context) {
+    selectedDate = ref.watch(selectedDateProvider);
     return SafeArea(
       child: isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -118,7 +121,9 @@ class _IndividualLineTabState extends ConsumerState<IndividualLineTab>
     setState(() {
       isLoading = true;
     });
-    await ref.read(weeklyDataProvider.notifier).getData();
+    await ref
+        .read(weeklyDataProvider.notifier)
+        .getData(selectedDate: selectedDate);
     weeklyData = ref.read(weeklyDataProvider.notifier).state;
     print(weeklyData['gameGroupData']);
     setState(() {
