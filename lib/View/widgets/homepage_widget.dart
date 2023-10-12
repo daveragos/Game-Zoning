@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gamezoning/Controller/Provider/date_provider.dart';
+import 'package:gamezoning/Controller/functions/employee_getter.dart';
 import 'package:gamezoning/Controller/functions/incomes.dart';
 import 'package:gamezoning/Model/api_constants.dart';
 import 'package:intl/intl.dart';
@@ -37,12 +38,14 @@ class _HomePageState extends ConsumerState<HomePage> {
     setState(() {
       isLoading = true;
     });
+
     //format the selectedDate to yyyy-mm-dd
     String formattedSelectedDate =
         DateFormat('yyyy-MM-dd').format(selectedDate!);
+    final selectedEmployee = ref.read(employeeProvider.notifier).state;
     print('formatted date iiiiiiissssssssss: $formattedSelectedDate');
     var responseData = await Income().getIncomeDataByEmployeeAndDate(
-        employeeUserName: "employee3name", date: formattedSelectedDate);
+        employeeUserName: selectedEmployee, date: formattedSelectedDate);
     print(responseData);
     gameDataList = responseData;
     // Calculate the total income
@@ -55,6 +58,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedEmployee = ref.watch(employeeProvider.notifier).state;
     return SingleChildScrollView(
       child: Center(
         child: isLoading
@@ -64,7 +68,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   SizedBox(width: 10),
                   _buildInfoContainer(preferences
                           .containsKey(AppConstants.STORAGE_USER_PROFILE_TOKEN)
-                      ? 'token = ${preferences.getString(AppConstants.STORAGE_USER_PROFILE_TOKEN).toString()}'
+                      ? 'Employee = $selectedEmployee'
                       : 'we dont serve that here'),
                   SizedBox(height: 40),
                   Padding(

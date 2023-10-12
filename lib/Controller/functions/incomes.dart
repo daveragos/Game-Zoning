@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gamezoning/Controller/Constants/https_route_consts.dart';
+import 'package:gamezoning/Controller/functions/employee_getter.dart';
 import 'package:gamezoning/Model/api_constants.dart';
 import 'package:intl/intl.dart';
 
@@ -7,11 +9,13 @@ class Income {
   //function for getting income data with employee
   Future<dynamic> getIncomeDataByEmployee(
       {required String employeeUserName}) async {
+    Ref? ref;
+    final selectedEmployee = ref!.read(employeeProvider.notifier).state;
     //use dio package
     final dio = Dio();
     return await dio
         .post(AppConstants.API_URL + Constants.GET_INCOME_BY_EMPLOYEES, data: {
-      'employee_username': employeeUserName,
+      'employee_username': selectedEmployee,
     });
   }
 
@@ -22,7 +26,7 @@ class Income {
     final dio = Dio();
     var response = await dio
         .post(AppConstants.API_URL + Constants.GET_INCOME_BY_DATE, data: {
-      'employee_username': employeeUserName,
+      'employee_username': 'employee3name',
       'date': date,
     });
 
@@ -51,11 +55,13 @@ class Income {
   //function for getting income data with employee and game
   Future<dynamic> getIncomeDataByEmployeeAndGame(
       {required String employeeUserName, required String gameName}) async {
+    Ref? ref;
+    final selectedEmployee = ref!.read(employeeProvider.notifier).state;
     //use dio package
     final dio = Dio();
     return await dio
         .post(AppConstants.API_URL + Constants.GET_INCOME_BY_GAME, data: {
-      'employee_username': employeeUserName,
+      'employee_username': selectedEmployee,
       'game_name': gameName,
     });
   }
@@ -65,12 +71,14 @@ class Income {
       {required String employeeUserName,
       required String gameName,
       required String date}) async {
+    Ref? ref;
+    final selectedEmployee = ref!.read(employeeProvider.notifier).state;
     //use dio package
     final dio = Dio();
     return await dio.post(
         AppConstants.API_URL + Constants.GET_INCOME_BY_DATE_AND_GAME,
         data: {
-          'employee_username': employeeUserName,
+          'employee_username': selectedEmployee,
           'game_name': gameName,
           'date': date,
         });
@@ -81,11 +89,13 @@ class Income {
       {required String employeeUserName,
       required String startDate,
       required String endDate}) async {
+    Ref? ref;
+    final selectedEmployee = ref!.read(employeeProvider.notifier).state;
     //use dio package
     final dio = Dio();
     return await dio
         .post(AppConstants.API_URL + Constants.GET_INCOME_BY_DATE_RANGE, data: {
-      'employee_username': employeeUserName,
+      'employee_username': selectedEmployee,
       'start_date': startDate,
       'end_date': endDate,
     });
@@ -97,12 +107,14 @@ class Income {
       required String gameName,
       required String startDate,
       required String endDate}) async {
+    Ref? ref;
+    final selectedEmployee = ref!.read(employeeProvider.notifier).state;
     //use dio package
     final dio = Dio();
     return await dio.post(
         AppConstants.API_URL + Constants.GET_INCOME_BY_GAME_AND_DATE_RANGE,
         data: {
-          'employee_username': employeeUserName,
+          'employee_username': selectedEmployee,
           'game_name': gameName,
           'start_date': startDate,
           'end_date': endDate,
@@ -115,10 +127,12 @@ class Income {
       required String gameName,
       required String amount,
       required String date}) async {
+    Ref? ref;
+    final selectedEmployee = ref!.read(employeeProvider.notifier).state;
     //use dio package
     final dio = Dio();
     return await dio.post(AppConstants.API_URL + Constants.ADD_INCOME, data: {
-      'employee_username': employeeUserName,
+      'employee_username': selectedEmployee,
       'game_name': gameName,
       'amount': amount,
       'date': date,
@@ -126,17 +140,16 @@ class Income {
   }
 
 //function for getting weekly data
-  Future<dynamic> getAllWeeklyData() async {
+  Future<dynamic> getAllWeeklyData({selectedEmployee}) async {
     //format the selectedDate to yyyy-mm-dd
     String formattedSelectedDate =
         DateFormat('yyyy-MM-dd').format(DateTime(2023, 09, 27));
-
     //use dio package
     final dio = Dio();
     var response = await dio.post(
         AppConstants.API_URL + Constants.GET_INCOME_BY_WEEKLY_DATE,
         data: {
-          'employee_username': 'employee3name',
+          'employee_username': selectedEmployee,
           'date': formattedSelectedDate,
         });
 

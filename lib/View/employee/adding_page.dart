@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gamezoning/Controller/Provider/date_provider.dart';
+import 'package:gamezoning/Controller/functions/employee_getter.dart';
 import 'package:gamezoning/Controller/functions/incomes.dart';
 import 'package:intl/intl.dart';
 
@@ -134,9 +135,10 @@ class _AddingPageState extends ConsumerState<AddingPage> {
       //format the selectedDate to yyyy-mm-dd
       String formattedSelectedDate =
           DateFormat('yyyy-MM-dd').format(selectedDate);
+      final selectedEmployee = ref.read(employeeProvider.notifier).state;
 
       Income().addIncomeData(
-        employeeUserName: 'employee3name',
+        employeeUserName: selectedEmployee,
         gameName: gameController.text,
         amount: amountController.text,
         date: formattedSelectedDate,

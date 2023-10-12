@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gamezoning/Controller/Constants/https_route_consts.dart';
 import 'package:gamezoning/Controller/Routes/approuter.dart';
+import 'package:gamezoning/Controller/functions/employee_getter.dart';
 import 'package:gamezoning/Model/api.dart';
 import 'package:gamezoning/Model/api_constants.dart';
 import 'package:gamezoning/View/widgets/toggler.dart';
@@ -65,9 +68,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               result.data['token'].toString());
           await pref.setString(AppConstants.STORAGE_USER_PROFILE_LABEL,
               result.data['label'].toString());
-          print(pref.getString(AppConstants.STORAGE_USER_PROFILE_KEY));
+          print(
+              'employees info saved: ${pref.getString(AppConstants.STORAGE_USER_PROFILE_KEY)}');
 
-          GoRouter.of(context).go(AppRouter.landingPath);
+          print('just the data from response :${result.data['user']}');
+          if (isOwner) {
+            GoRouter.of(context).go(AppRouter.landingPath);
+          } else {
+// Parse the JSON response
+            Map<String, dynamic> responseMap = json.decode(result.data);
+
+// Extract the username
+            String username = responseMap['user']['username'];
+
+// Use the extracted username
+            ref.watch(employeeProvider.notifier).setName(username);
+
+            ref.watch(employeeProvider.notifier).setName(username);
+            GoRouter.of(context).go(AppRouter.employeeHomePath);
+          }
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(result.data['message']),

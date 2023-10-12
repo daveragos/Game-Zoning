@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gamezoning/Controller/Provider/tab_provider.dart';
+import 'package:gamezoning/Controller/functions/employee_getter.dart';
 import 'package:gamezoning/Controller/functions/weekly_data.dart';
 import 'package:gamezoning/View/owner/linechart_widget.dart';
 import 'package:gamezoning/View/owner/side_detail_page.dart';
@@ -117,7 +118,10 @@ class _IndividualLineTabState extends ConsumerState<IndividualLineTab>
     setState(() {
       isLoading = true;
     });
-    await ref.read(weeklyDataProvider.notifier).getData();
+    final selectedEmployee = ref.read(employeeProvider.notifier).state;
+    await ref
+        .read(weeklyDataProvider.notifier)
+        .getData(selectedEmployee: selectedEmployee);
     weeklyData = ref.read(weeklyDataProvider.notifier).state;
     print(weeklyData['gameGroupData']);
     setState(() {

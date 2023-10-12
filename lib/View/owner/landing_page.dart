@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gamezoning/Controller/Provider/employee_provider.dart';
+import 'package:gamezoning/Controller/Routes/approuter.dart';
+import 'package:gamezoning/Controller/functions/employee_getter.dart';
 import 'package:gamezoning/Controller/functions/incomes.dart';
 import 'package:gamezoning/Controller/functions/weekly_data.dart';
 import 'package:gamezoning/View/owner/o_home_page.dart';
 import 'package:gamezoning/View/owner/swapping_page.dart';
+import 'package:gamezoning/View/widgets/appbar_widget.dart';
+import 'package:gamezoning/View/widgets/drawer_widget.dart';
 import 'package:go_router/go_router.dart';
 
 class OwnerLandingPage extends ConsumerStatefulWidget {
@@ -41,6 +45,8 @@ class _OwnerLandingPageState extends ConsumerState<OwnerLandingPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBarWidget(),
+        drawer: DrawerWidget(),
         body: !isLoading
             ? employees.isEmpty
                 ? const Center(
@@ -62,6 +68,11 @@ class _OwnerLandingPageState extends ConsumerState<OwnerLandingPage> {
                                     ref
                                         .read(selectedEmployeeProvider.notifier)
                                         .setSelectedEmployee(index);
+                                    ref
+                                        .watch(employeeProvider.notifier)
+                                        .setName(employees[index]);
+                                    GoRouter.of(context)
+                                        .go(AppRouter.ownerHomePath);
                                   },
                                 );
                               },
