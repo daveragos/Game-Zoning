@@ -24,6 +24,7 @@ class _OwnerLandingPageState extends ConsumerState<OwnerLandingPage> {
 
   @override
   void initState() {
+    super.initState();
     getData();
   }
 

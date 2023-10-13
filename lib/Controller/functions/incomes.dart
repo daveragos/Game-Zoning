@@ -1,40 +1,48 @@
-import 'package:dio/dio.dart';
 import 'package:gamezoning/Controller/Constants/https_route_consts.dart';
+import 'package:gamezoning/Model/api.dart';
 import 'package:gamezoning/Model/api_constants.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dio/dio.dart';
 
 class Income {
+  SharedPreferences? pref;
+
+  Future<void> init() async {
+    pref = await SharedPreferences.getInstance();
+  }
+
   //function for getting income data with employee
   Future<dynamic> getIncomeDataByEmployee() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    await init();
     final selectedEmployee =
-        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
-    //use dio package
-    final dio = Dio();
-    return await dio
-        .post(AppConstants.API_URL + Constants.GET_INCOME_BY_EMPLOYEES, data: {
-      'employee_username': selectedEmployee,
-    });
+        pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
+    //use API helper
+    final result = await API().postRequest(
+      route: Constants.GET_INCOME_BY_EMPLOYEES,
+      data: {'employee_username': selectedEmployee},
+    );
+    return result;
   }
 
   //function for getting income data with employee and date
   Future<dynamic> getIncomeDataByEmployeeAndDate({required String date}) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    await init();
     final selectedEmployee =
-        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
-    //use dio package
-    final dio = Dio();
-    var response = await dio
-        .post(AppConstants.API_URL + Constants.GET_INCOME_BY_DATE, data: {
-      'employee_username': selectedEmployee,
-      'date': date,
-    });
+        pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
+    //use API helper
+    final result = await API().postRequest(
+      route: Constants.GET_INCOME_BY_DATE,
+      data: {
+        'employee_username': selectedEmployee,
+        'date': date,
+      },
+    );
 
     //check all possible response types and return accordingly
-    if (response.statusCode == 200) {
+    if (result.statusCode == 200) {
       // Response data is already parsed as a Map
-      Map<String, dynamic> jsonResponse = response.data;
+      Map<String, dynamic> jsonResponse = result.data;
 
       // Now you can access and process the data as needed
       List<dynamic> dataList = jsonResponse['data'];
@@ -46,56 +54,61 @@ class Income {
       }).toList();
       return gameDataList;
     } else {
-      print('Request failed with status: ${response.statusCode}');
+      print('Request failed with status: ${result.statusCode}');
     }
   }
 
   //function for getting income data with employee and game
   Future<dynamic> getIncomeDataByEmployeeAndGame(
       {required String gameName}) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    await init();
     final selectedEmployee =
-        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
-    //use dio package
-    final dio = Dio();
-    return await dio
-        .post(AppConstants.API_URL + Constants.GET_INCOME_BY_GAME, data: {
-      'employee_username': selectedEmployee,
-      'game_name': gameName,
-    });
+        pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
+    //use API helper
+    final result = await API().postRequest(
+      route: Constants.GET_INCOME_BY_GAME,
+      data: {
+        'employee_username': selectedEmployee,
+        'game_name': gameName,
+      },
+    );
+    return result;
   }
 
   //function for getting income data with employee and game and date
   Future<dynamic> getIncomeDataByEmployeeAndGameAndDate(
       {required String gameName, required String date}) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    await init();
     final selectedEmployee =
-        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
-    //use dio package
-    final dio = Dio();
-    return await dio.post(
-        AppConstants.API_URL + Constants.GET_INCOME_BY_DATE_AND_GAME,
-        data: {
-          'employee_username': selectedEmployee,
-          'game_name': gameName,
-          'date': date,
-        });
+        pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
+    //use API helper
+    final result = await API().postRequest(
+      route: Constants.GET_INCOME_BY_DATE_AND_GAME,
+      data: {
+        'employee_username': selectedEmployee,
+        'game_name': gameName,
+        'date': date,
+      },
+    );
+    return result;
   }
 
   //function for getting income data with employee and date range
   Future<dynamic> getIncomeDataByEmployeeAndDateRange(
       {required String startDate, required String endDate}) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    await init();
     final selectedEmployee =
-        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
-    //use dio package
-    final dio = Dio();
-    return await dio
-        .post(AppConstants.API_URL + Constants.GET_INCOME_BY_DATE_RANGE, data: {
-      'employee_username': selectedEmployee,
-      'start_date': startDate,
-      'end_date': endDate,
-    });
+        pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
+    //use API helper
+    final result = await API().postRequest(
+      route: Constants.GET_INCOME_BY_DATE_RANGE,
+      data: {
+        'employee_username': selectedEmployee,
+        'start_date': startDate,
+        'end_date': endDate,
+      },
+    );
+    return result;
   }
 
   //function for getting income data with employee and game and date range
@@ -103,19 +116,20 @@ class Income {
       {required String gameName,
       required String startDate,
       required String endDate}) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    await init();
     final selectedEmployee =
-        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
-    //use dio package
-    final dio = Dio();
-    return await dio.post(
-        AppConstants.API_URL + Constants.GET_INCOME_BY_GAME_AND_DATE_RANGE,
-        data: {
-          'employee_username': selectedEmployee,
-          'game_name': gameName,
-          'start_date': startDate,
-          'end_date': endDate,
-        });
+        pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
+    //use API helper
+    final result = await API().postRequest(
+      route: Constants.GET_INCOME_BY_GAME_AND_DATE_RANGE,
+      data: {
+        'employee_username': selectedEmployee,
+        'game_name': gameName,
+        'start_date': startDate,
+        'end_date': endDate,
+      },
+    );
+    return result;
   }
 
   //function for storing income data
@@ -123,40 +137,43 @@ class Income {
       {required String gameName,
       required String amount,
       required String date}) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    await init();
     final selectedEmployee =
-        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
-    //use dio package
-    final dio = Dio();
-    return await dio.post(AppConstants.API_URL + Constants.ADD_INCOME, data: {
-      'employee_username': selectedEmployee,
-      'game_name': gameName,
-      'amount': amount,
-      'date': date,
-    });
+        pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
+    //use API helper
+    final result = await API().postRequest(
+      route: Constants.ADD_INCOME,
+      data: {
+        'employee_username': selectedEmployee,
+        'game_name': gameName,
+        'amount': amount,
+        'date': date,
+      },
+    );
+    return result;
   }
 
-//function for getting weekly data
+  //function for getting weekly data
   Future<dynamic> getAllWeeklyData({required selectedDate}) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    await init();
     final selectedEmployee =
-        pref.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
+        pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
     //format the selectedDate to yyyy-mm-dd
     String formattedSelectedDate =
         DateFormat('yyyy-MM-dd').format(selectedDate);
-    //use dio package
-    final dio = Dio();
-    var response = await dio.post(
-        AppConstants.API_URL + Constants.GET_INCOME_BY_WEEKLY_DATE,
-        data: {
-          'employee_username': selectedEmployee,
-          'date': formattedSelectedDate,
-        });
+    //use API helper
+    final result = await API().postRequest(
+      route: Constants.GET_INCOME_BY_WEEKLY_DATE,
+      data: {
+        'employee_username': selectedEmployee,
+        'date': formattedSelectedDate,
+      },
+    );
 
     //check all possible response types and return accordingly
-    if (response.statusCode == 200) {
+    if (result.statusCode == 200) {
       // Response data is already parsed as a Map
-      Map<String, dynamic> jsonResponse = response.data;
+      Map<String, dynamic> jsonResponse = result.data;
 
       // Now you can access and process the data as needed
       List<dynamic> dataList = jsonResponse['data'];
@@ -172,16 +189,16 @@ class Income {
       // print(gameDataList);
       return gameDataList;
     } else {
-      print('Request failed with status: ${response.statusCode}');
+      print('Request failed with status: ${result.statusCode}');
     }
   }
 
   Future<List<String>> getEmployeesUsernames() async {
+    await init();
     final dio = Dio(); // Create a Dio instance
     List<String> usernames = [];
-    SharedPreferences pref = await SharedPreferences.getInstance();
     final owner =
-        pref.getString(AppConstants.STORAGE_USER_PROFILE_owner_username)!;
+        pref!.getString(AppConstants.STORAGE_USER_PROFILE_owner_username)!;
     try {
       // Replace 'your-api-url' with your actual API URL
       final response =
