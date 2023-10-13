@@ -5,6 +5,7 @@ import 'package:gamezoning/Controller/Provider/date_provider.dart';
 import 'package:gamezoning/Controller/Provider/tab_provider.dart';
 import 'package:gamezoning/Controller/functions/weekly_data.dart';
 import 'package:gamezoning/View/owner/linechart_widget.dart';
+import 'package:gamezoning/View/owner/nodata_page.dart';
 import 'package:gamezoning/View/owner/side_detail_page.dart';
 import 'package:gamezoning/View/owner/weekly_pie_page.dart';
 
@@ -123,6 +124,7 @@ class _IndividualLineTabState extends ConsumerState<IndividualLineTab>
         .read(weeklyDataProvider.notifier)
         .getData(selectedDate: selectedDate);
     weeklyData = ref.read(weeklyDataProvider.notifier).state;
+
     print(weeklyData['gameGroupData']);
     setState(() {
       isLoading = false;

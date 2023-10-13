@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gamezoning/Controller/Provider/date_provider.dart';
 import 'package:gamezoning/Controller/Provider/tab_provider.dart';
 import 'package:gamezoning/Controller/functions/weekly_data.dart';
 import 'package:intl/intl.dart';
@@ -15,6 +16,30 @@ class LineChartWidget extends ConsumerWidget {
     final tabbed = ref.watch(selectedTabProvider);
     final lineData =
         ref.watch(weeklyDataProvider.notifier).state['gameGroupData'];
+    final selectedDate = ref.watch(selectedDateProvider);
+    //formate the date
+    String formattedSelectedDate =
+        DateFormat('yyyy-MM-dd').format(selectedDate);
+    if (lineData.isEmpty) {
+      // Display a message to the user that there is no data available
+      return Center(
+        child: Text(
+          'No data available on weekdays of $formattedSelectedDate',
+          style: const TextStyle(fontSize: 20),
+        ),
+      );
+    } else if (tabbed >= lineData.length) {
+      // Handle the case where tabbed is an invalid index for the list
+      return const Center(
+        child: Text(
+          'Invalid tab index',
+          style: TextStyle(fontSize: 20),
+        ),
+      );
+    } else {
+      final data = lineData.values.toList()[tabbed];
+      // Use the data variable as needed
+    }
     if (lineData == null) {
       return const SizedBox();
     }
