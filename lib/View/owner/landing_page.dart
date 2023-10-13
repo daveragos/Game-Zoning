@@ -4,7 +4,6 @@ import 'package:gamezoning/Controller/Provider/employee_provider.dart';
 import 'package:gamezoning/Controller/Routes/approuter.dart';
 import 'package:gamezoning/Controller/functions/employee_getter.dart';
 import 'package:gamezoning/Controller/functions/incomes.dart';
-import 'package:gamezoning/Controller/functions/weekly_data.dart';
 import 'package:gamezoning/Model/api_constants.dart';
 import 'package:gamezoning/View/owner/o_home_page.dart';
 import 'package:gamezoning/View/owner/swapping_page.dart';

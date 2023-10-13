@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gamezoning/Controller/Constants/https_route_consts.dart';
-import 'package:gamezoning/Controller/Provider/date_provider.dart';
 import 'package:gamezoning/Model/api_constants.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,9 +44,6 @@ class Income {
           'amount': double.parse(item['amount']),
         };
       }).toList();
-
-      // Print or use the gameDataList here
-      // print(gameDataList);
       return gameDataList;
     } else {
       print('Request failed with status: ${response.statusCode}');
@@ -191,7 +186,6 @@ class Income {
       // Replace 'your-api-url' with your actual API URL
       final response =
           await dio.get('${Constants.BASE_URL}employees/owner/$owner');
-
       if (response.statusCode == 200) {
         // Request was successful
         final responseData = response.data;

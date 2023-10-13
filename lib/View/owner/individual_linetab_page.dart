@@ -3,12 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gamezoning/Controller/Provider/date_provider.dart';
 import 'package:gamezoning/Controller/Provider/tab_provider.dart';
-import 'package:gamezoning/Controller/functions/employee_getter.dart';
 import 'package:gamezoning/Controller/functions/weekly_data.dart';
 import 'package:gamezoning/View/owner/linechart_widget.dart';
 import 'package:gamezoning/View/owner/side_detail_page.dart';
 import 'package:gamezoning/View/owner/weekly_pie_page.dart';
-import 'package:intl/intl.dart';
 
 class IndividualLineTab extends ConsumerStatefulWidget {
   const IndividualLineTab({super.key});

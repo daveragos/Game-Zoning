@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gamezoning/Controller/Provider/position_provider.dart';
 
 class Toggler extends StatefulWidget {
   const Toggler({Key? key, required this.labels, required this.onToggle})
