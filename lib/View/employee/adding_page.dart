@@ -136,10 +136,10 @@ class _AddingPageState extends ConsumerState<AddingPage> {
           DateFormat('yyyy-MM-dd').format(selectedDate);
 
       Income().addIncomeData(
-        gameName: gameController.text,
-        amount: amountController.text,
-        date: formattedSelectedDate,
-      );
+          gameName: gameController.text,
+          amount: amountController.text,
+          date: formattedSelectedDate,
+          context: context);
 
       print(gameController.text);
       print(amountController.text);

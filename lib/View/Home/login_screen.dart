@@ -28,7 +28,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
 
-    void login() async {
+    void login({required context}) async {
       if (emailController.text.isEmpty || passwordController.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -53,52 +53,66 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             isOwner // Determine the route based on the value of isOwner
                 ? Constants.OWNERS_LOGIN_URL
                 : Constants.EMPLOYEES_LOGIN_URL;
-        final result = await API().postRequest(route: route, data: {
-          'email': emailController.text.toString(),
-          'password': passwordController.text.toString(),
-        });
-        // print(jsonDecode(result.toString()));
-        if (result.statusCode == 200) {
-          //! storing the login info of the user to local db
-          SharedPreferences pref = await SharedPreferences.getInstance();
-          await pref.setString(AppConstants.STORAGE_USER_PROFILE_KEY,
-              result.data['user'].toString());
-          await pref.setString(AppConstants.STORAGE_USER_PROFILE_TOKEN,
-              result.data['token'].toString());
-          await pref.setString(AppConstants.STORAGE_USER_PROFILE_LABEL,
-              result.data['label'].toString());
-          print(
-              'employees info saved: ${pref.getString(AppConstants.STORAGE_USER_PROFILE_KEY)}');
+        final result = await API().postRequest(
+            route: route,
+            data: {
+              'email': emailController.text.toString(),
+              'password': passwordController.text.toString(),
+            },
+            context: context);
+        if (result != null) {
+          // print(jsonDecode(result.toString()));
+          if (result.statusCode == 200) {
+            //! storing the login info of the user to local db
+            SharedPreferences pref = await SharedPreferences.getInstance();
+            await pref.setString(AppConstants.STORAGE_USER_PROFILE_KEY,
+                result.data['user'].toString());
+            await pref.setString(AppConstants.STORAGE_USER_PROFILE_TOKEN,
+                result.data['token'].toString());
+            await pref.setString(AppConstants.STORAGE_USER_PROFILE_LABEL,
+                result.data['label'].toString());
+            print(
+                'employees info saved: ${pref.getString(AppConstants.STORAGE_USER_PROFILE_KEY)}');
 
-          print('just the data from response :${result.data['user']}');
-          // Parse the JSON response
-          Map<String, dynamic> responseMap = result.data;
-          // Extract the username
-          String username = responseMap['user']['username'];
-          if (isOwner) {
-            ref.watch(ownerProvider.notifier).setName(username);
-            final selectedUsername = ref.watch(ownerProvider.notifier).state;
-            await pref.setString(
-                AppConstants.STORAGE_USER_PROFILE_owner_username,
-                selectedUsername);
-            GoRouter.of(context).go(AppRouter.landingPath);
-          } else {
-            ref.watch(employeeProvider.notifier).setName(username);
-            final selectedUsername = ref.watch(employeeProvider.notifier).state;
-            await pref.setString(
-                AppConstants.STORAGE_USER_PROFILE_employee_username,
-                selectedUsername);
-            GoRouter.of(context).go(AppRouter.employeeHomePath);
+            print('just the data from response :${result.data['user']}');
+            // Parse the JSON response
+            Map<String, dynamic> responseMap = result.data;
+            // Extract the username
+            String username = responseMap['user']['username'];
+            if (isOwner) {
+              ref.watch(ownerProvider.notifier).setName(username);
+              final selectedUsername = ref.watch(ownerProvider.notifier).state;
+              await pref.setString(
+                  AppConstants.STORAGE_USER_PROFILE_owner_username,
+                  selectedUsername);
+              GoRouter.of(context).go(AppRouter.landingPath);
+            } else {
+              ref.watch(employeeProvider.notifier).setName(username);
+              final selectedUsername =
+                  ref.watch(employeeProvider.notifier).state;
+              await pref.setString(
+                  AppConstants.STORAGE_USER_PROFILE_employee_username,
+                  selectedUsername);
+              GoRouter.of(context).go(AppRouter.employeeHomePath);
+            }
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(result.data['message']),
+              ),
+            );
           }
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(result.data['message']),
-            ),
-          );
+          //handle if the response is 401
+          else if (result.statusCode == 401) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(result.data['message']),
+              ),
+            );
+          }
         } else {
           GoRouter.of(context).go(AppRouter.loginPath);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Error: ${result.body}'),
+            content: Text('Error occured please try again'),
           ));
         }
       }
@@ -154,7 +168,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                onPressed: () => login(),
+                onPressed: () => login(context: context),
                 child: Text('Login'),
               ),
               Row(

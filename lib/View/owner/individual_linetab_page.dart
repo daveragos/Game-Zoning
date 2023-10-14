@@ -122,7 +122,7 @@ class _IndividualLineTabState extends ConsumerState<IndividualLineTab>
     });
     await ref
         .read(weeklyDataProvider.notifier)
-        .getData(selectedDate: selectedDate);
+        .getData(selectedDate: selectedDate, context: context);
     weeklyData = ref.read(weeklyDataProvider.notifier).state;
 
     print(weeklyData['gameGroupData']);

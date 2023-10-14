@@ -1,9 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:gamezoning/Controller/Constants/https_route_consts.dart';
 import 'package:gamezoning/Model/api.dart';
 import 'package:gamezoning/Model/api_constants.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 class Income {
   SharedPreferences? pref;
@@ -13,12 +16,13 @@ class Income {
   }
 
   //function for getting income data with employee
-  Future<dynamic> getIncomeDataByEmployee() async {
+  Future<dynamic> getIncomeDataByEmployee(BuildContext context) async {
     await init();
     final selectedEmployee =
         pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
     //use API helper
     final result = await API().postRequest(
+      context: context,
       route: Constants.GET_INCOME_BY_EMPLOYEES,
       data: {'employee_username': selectedEmployee},
     );
@@ -26,46 +30,33 @@ class Income {
   }
 
   //function for getting income data with employee and date
-  Future<dynamic> getIncomeDataByEmployeeAndDate({required String date}) async {
+  Future<dynamic> getIncomeDataByEmployeeAndDate(
+      {required BuildContext context, required String date}) async {
     await init();
     final selectedEmployee =
         pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
     //use API helper
     final result = await API().postRequest(
+      context: context,
       route: Constants.GET_INCOME_BY_DATE,
       data: {
         'employee_username': selectedEmployee,
         'date': date,
       },
     );
-
     //check all possible response types and return accordingly
-    if (result.statusCode == 200) {
-      // Response data is already parsed as a Map
-      Map<String, dynamic> jsonResponse = result.data;
-
-      // Now you can access and process the data as needed
-      List<dynamic> dataList = jsonResponse['data'];
-      List<Map<String, dynamic>> gameDataList = dataList.map((item) {
-        return {
-          'game_name': item['game_name'],
-          'amount': double.parse(item['amount']),
-        };
-      }).toList();
-      return gameDataList;
-    } else {
-      print('Request failed with status: ${result.statusCode}');
-    }
+    return result;
   }
 
   //function for getting income data with employee and game
   Future<dynamic> getIncomeDataByEmployeeAndGame(
-      {required String gameName}) async {
+      {required BuildContext context, required String gameName}) async {
     await init();
     final selectedEmployee =
         pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
     //use API helper
     final result = await API().postRequest(
+      context: context,
       route: Constants.GET_INCOME_BY_GAME,
       data: {
         'employee_username': selectedEmployee,
@@ -77,12 +68,15 @@ class Income {
 
   //function for getting income data with employee and game and date
   Future<dynamic> getIncomeDataByEmployeeAndGameAndDate(
-      {required String gameName, required String date}) async {
+      {required BuildContext context,
+      required String gameName,
+      required String date}) async {
     await init();
     final selectedEmployee =
         pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
     //use API helper
     final result = await API().postRequest(
+      context: context,
       route: Constants.GET_INCOME_BY_DATE_AND_GAME,
       data: {
         'employee_username': selectedEmployee,
@@ -95,12 +89,15 @@ class Income {
 
   //function for getting income data with employee and date range
   Future<dynamic> getIncomeDataByEmployeeAndDateRange(
-      {required String startDate, required String endDate}) async {
+      {required BuildContext context,
+      required String startDate,
+      required String endDate}) async {
     await init();
     final selectedEmployee =
         pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
     //use API helper
     final result = await API().postRequest(
+      context: context,
       route: Constants.GET_INCOME_BY_DATE_RANGE,
       data: {
         'employee_username': selectedEmployee,
@@ -113,7 +110,8 @@ class Income {
 
   //function for getting income data with employee and game and date range
   Future<dynamic> getIncomeDataByEmployeeAndGameAndDateRange(
-      {required String gameName,
+      {required BuildContext context,
+      required String gameName,
       required String startDate,
       required String endDate}) async {
     await init();
@@ -121,6 +119,7 @@ class Income {
         pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
     //use API helper
     final result = await API().postRequest(
+      context: context,
       route: Constants.GET_INCOME_BY_GAME_AND_DATE_RANGE,
       data: {
         'employee_username': selectedEmployee,
@@ -134,7 +133,8 @@ class Income {
 
   //function for storing income data
   Future<dynamic> addIncomeData(
-      {required String gameName,
+      {required BuildContext context,
+      required String gameName,
       required String amount,
       required String date}) async {
     await init();
@@ -142,6 +142,7 @@ class Income {
         pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
     //use API helper
     final result = await API().postRequest(
+      context: context,
       route: Constants.ADD_INCOME,
       data: {
         'employee_username': selectedEmployee,
@@ -154,7 +155,8 @@ class Income {
   }
 
   //function for getting weekly data
-  Future<dynamic> getAllWeeklyData({required selectedDate}) async {
+  Future<dynamic> getAllWeeklyData(
+      {required BuildContext context, required selectedDate}) async {
     await init();
     final selectedEmployee =
         pref!.getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
@@ -163,6 +165,7 @@ class Income {
         DateFormat('yyyy-MM-dd').format(selectedDate);
     //use API helper
     final result = await API().postRequest(
+      context: context,
       route: Constants.GET_INCOME_BY_WEEKLY_DATE,
       data: {
         'employee_username': selectedEmployee,
@@ -193,7 +196,8 @@ class Income {
     }
   }
 
-  Future<List<String>> getEmployeesUsernames() async {
+  Future<List<String>> getEmployeesUsernames(
+      {required BuildContext context}) async {
     await init();
     final dio = Dio(); // Create a Dio instance
     List<String> usernames = [];

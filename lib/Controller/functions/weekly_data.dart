@@ -9,9 +9,9 @@ final weeklyDataProvider =
 class WeeklyData extends StateNotifier<Map<String, dynamic>> {
   WeeklyData() : super({});
 
-  Future<void> getData({required selectedDate}) async {
-    final response =
-        await Income().getAllWeeklyData(selectedDate: selectedDate);
+  Future<void> getData({required selectedDate, required context}) async {
+    final response = await Income()
+        .getAllWeeklyData(selectedDate: selectedDate, context: context);
     final gameDataList = response;
     final gameGroupData = <String, List<Map<String, dynamic>>>{};
 

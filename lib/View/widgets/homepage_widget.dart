@@ -38,21 +38,42 @@ class _HomePageState extends ConsumerState<HomePage> {
     setState(() {
       isLoading = true;
     });
-
+    preferences = await SharedPreferences.getInstance();
+    selectedEmployee = '';
     //format the selectedDate to yyyy-mm-dd
     String formattedSelectedDate =
         DateFormat('yyyy-MM-dd').format(selectedDate!);
     print('formatted date iiiiiiissssssssss: $formattedSelectedDate');
-    var responseData = await Income()
-        .getIncomeDataByEmployeeAndDate(date: formattedSelectedDate);
-    print(responseData);
-    gameDataList = responseData;
-    // Calculate the total income
-    calculateTotalIncome();
-    preferences = await SharedPreferences.getInstance();
-    selectedEmployee = preferences
-        .getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
+    var responseData = await Income().getIncomeDataByEmployeeAndDate(
+        date: formattedSelectedDate, context: context);
+    if (responseData != null) {
+      if (responseData.statusCode == 200) {
+        // Response data is already parsed as a Map
+        Map<String, dynamic> jsonResponse = responseData.data;
 
+        // Now you can access and process the data as needed
+        List<dynamic> dataList = jsonResponse['data'];
+        List<Map<String, dynamic>> gameDataListApi = dataList.map((item) {
+          return {
+            'game_name': item['game_name'],
+            'amount': double.parse(item['amount']),
+          };
+        }).toList();
+        gameDataList = gameDataListApi;
+      }
+
+      // Calculate the total income
+      calculateTotalIncome();
+
+      selectedEmployee = preferences
+          .getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error Occured, Please try again'),
+        ),
+      );
+    }
     setState(() {
       isLoading = false;
     });

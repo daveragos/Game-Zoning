@@ -59,7 +59,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         if (!isOwner) {
           data['owner_username'] = ownerUsernameController.text.toString();
         }
-        final result = await API().postRequest(route: route, data: data);
+        final result =
+            await API().postRequest(route: route, data: data, context: context);
         // print(jsonDecode(result.toString()));
         if (result.statusCode == 200) {
           print('REGISTERED INFO : $result');
