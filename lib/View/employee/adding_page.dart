@@ -20,6 +20,7 @@ class _AddingPageState extends ConsumerState<AddingPage> {
 
   @override
   void initState() {
+    super.initState();
     selectedDate = ref.read(selectedDateProvider);
   }
 

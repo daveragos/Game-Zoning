@@ -5,6 +5,8 @@ import 'package:gamezoning/Controller/functions/weekly_data.dart';
 import 'package:intl/intl.dart';
 
 class SideDetail extends ConsumerWidget {
+  const SideDetail({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tabbed = ref.watch(selectedTabProvider);

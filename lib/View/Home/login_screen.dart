@@ -81,15 +81,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             String username = responseMap['user']['username'];
             if (isOwner) {
               ref.watch(ownerProvider.notifier).setName(username);
-              final selectedUsername = ref.watch(ownerProvider.notifier).state;
+              final selectedUsername = ref.watch(ownerProvider);
               await pref.setString(
                   AppConstants.STORAGE_USER_PROFILE_owner_username,
                   selectedUsername);
               GoRouter.of(context).go(AppRouter.landingPath);
             } else {
               ref.watch(employeeProvider.notifier).setName(username);
-              final selectedUsername =
-                  ref.watch(employeeProvider.notifier).state;
+              final selectedUsername = ref.watch(employeeProvider);
               await pref.setString(
                   AppConstants.STORAGE_USER_PROFILE_employee_username,
                   selectedUsername);

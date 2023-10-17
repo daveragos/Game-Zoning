@@ -5,7 +5,6 @@ import 'package:gamezoning/Controller/Provider/date_provider.dart';
 import 'package:gamezoning/Controller/Provider/tab_provider.dart';
 import 'package:gamezoning/Controller/functions/weekly_data.dart';
 import 'package:gamezoning/View/owner/linechart_widget.dart';
-import 'package:gamezoning/View/owner/nodata_page.dart';
 import 'package:gamezoning/View/owner/side_detail_page.dart';
 import 'package:gamezoning/View/owner/weekly_pie_page.dart';
 
@@ -101,11 +100,11 @@ class _IndividualLineTabState extends ConsumerState<IndividualLineTab>
                       ),
                     ),
                   ),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(
+                      SizedBox(
                           height: 200, width: 200, child: PieChartSample2()),
                       SideDetail(),
                     ],
@@ -123,7 +122,7 @@ class _IndividualLineTabState extends ConsumerState<IndividualLineTab>
     await ref
         .read(weeklyDataProvider.notifier)
         .getData(selectedDate: selectedDate, context: context);
-    weeklyData = ref.read(weeklyDataProvider.notifier).state;
+    weeklyData = ref.read(weeklyDataProvider);
 
     print(weeklyData['gameGroupData']);
     setState(() {

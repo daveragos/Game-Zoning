@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AlertDialog {
-  CupertinoAlertDialog _cupertinoAlertDialog({
+class AlerterDialog {
+  AlertDialog _cupertinoAlertDialog({
     required BuildContext context,
     required String title,
     required String content,
   }) {
-    return CupertinoAlertDialog(
+    return AlertDialog(
       title: Text(title),
       content: Text(content),
       actions: [
         CupertinoDialogAction(
-          child: Text('OK'),
+          child: const Text('OK'),
           onPressed: () {
             Navigator.pop(context);
           },

@@ -42,7 +42,7 @@ class _PieChart2State extends ConsumerState<PieChartSample2> {
   }
 
   List<PieChartSectionData> showingSections() {
-    final data = ref.read(weeklyDataProvider.notifier).state;
+    final data = ref.read(weeklyDataProvider);
     print('|||||||||||||||||||||||| ${data['gameDataList']}');
     return data['gamePercentages']
         .entries

@@ -5,7 +5,7 @@ import 'package:gamezoning/Model/api_constants.dart';
 import 'package:gamezoning/Model/api_exceptions.dart';
 
 class API {
-  Alert.AlertDialog alertDialog = Alert.AlertDialog();
+  Alert.AlerterDialog alertDialog = Alert.AlerterDialog();
   postRequest(
       {required String route,
       required Map<String, String> data,

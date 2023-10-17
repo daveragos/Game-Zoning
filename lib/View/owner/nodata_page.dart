@@ -12,7 +12,7 @@ class NoDataPage extends StatelessWidget {
       body: Center(
         child: Text(
           'There is no data for the selected date.',
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
     );
