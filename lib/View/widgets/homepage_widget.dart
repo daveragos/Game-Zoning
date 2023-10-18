@@ -46,34 +46,27 @@ class _HomePageState extends ConsumerState<HomePage> {
     print('formatted date iiiiiiissssssssss: $formattedSelectedDate');
     var responseData = await Income().getIncomeDataByEmployeeAndDate(
         date: formattedSelectedDate, context: context);
-    if (responseData != null) {
-      if (responseData.statusCode == 200) {
-        // Response data is already parsed as a Map
-        Map<String, dynamic> jsonResponse = responseData.data;
 
-        // Now you can access and process the data as needed
-        List<dynamic> dataList = jsonResponse['data'];
-        List<Map<String, dynamic>> gameDataListApi = dataList.map((item) {
-          return {
-            'game_name': item['game_name'],
-            'amount': double.parse(item['amount']),
-          };
-        }).toList();
-        gameDataList = gameDataListApi;
-      }
+// Response data is already parsed as a Map
+    Map<String, dynamic> jsonResponse = responseData;
 
-      // Calculate the total income
-      calculateTotalIncome();
+// Now you can access and process the data as needed
+    Map<String, double> dataMap = jsonResponse['data'];
+    List<Map<String, dynamic>> gameDataListApi = dataMap.entries.map((entry) {
+      return {
+        'game_name': entry.key,
+        'amount': entry.value,
+      };
+    }).toList();
+    print('odododo $gameDataListApi');
+    gameDataList = gameDataListApi;
 
-      selectedEmployee = preferences
-          .getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error Occured, Please try again'),
-        ),
-      );
-    }
+    // Calculate the total income
+    calculateTotalIncome();
+
+    selectedEmployee = preferences
+        .getString(AppConstants.STORAGE_USER_PROFILE_employee_username)!;
+
     setState(() {
       isLoading = false;
     });

@@ -15,18 +15,46 @@ class WeeklyData extends StateNotifier<Map<String, dynamic>> {
     final gameDataList = response;
     final gameGroupData = <String, List<Map<String, dynamic>>>{};
 
-    for (var gameData in gameDataList) {
-      String gameName = gameData['game_name'];
+    // Predefine your game names
+    final gameNames = ['betting', 'coffee', 'dstv', 'pool', 'ps', 'vr'];
+
+    // Initialize gameGroupData for each game name
+    for (var gameName in gameNames) {
+      gameGroupData[gameName] = [];
+    }
+
+    // Populate gameGroupData with data from gameDataList
+    for (var gameData in gameDataList!) {
+      String gameName = gameData['game_name'].toLowerCase();
       double amount = gameData['amount'];
       String date = gameData['date'];
 
-      if (!gameGroupData.containsKey(gameName)) {
-        gameGroupData[gameName] = [];
-      }
+      gameGroupData[gameName]!.add({'amount': amount, 'date': date});
+    }
 
-      gameGroupData[gameName]?.add({'amount': amount, 'date': date});
-      gameGroupData[gameName]?.sort((a, b) => a['date'].compareTo(
-          b['date'])); // Sort the game data items by date in ascending order
+    // For each game name, check and add missing dates with 0.0 amount
+    for (var gameName in gameNames) {
+      for (var gameData in gameGroupData[gameName]!) {
+        // Get a list of unique dates for the current game name
+        final uniqueDates = gameGroupData[gameName]!
+            .map((entry) => entry['date'])
+            .toSet()
+            .toList();
+
+        // Iterate over unique dates and add missing dates with 0.0 amount
+        for (var date in uniqueDates) {
+          bool dateExists =
+              gameGroupData[gameName]!.any((entry) => entry['date'] == date);
+          if (!dateExists) {
+            gameGroupData[gameName]!.add({'amount': 0.0, 'date': date});
+          }
+        }
+      }
+    }
+
+    // Sort the game data items by date in ascending order
+    for (var gameName in gameNames) {
+      gameGroupData[gameName]?.sort((a, b) => a['date'].compareTo(b['date']));
     }
 
     double totalAmount = 0;
@@ -38,7 +66,7 @@ class WeeklyData extends StateNotifier<Map<String, dynamic>> {
 
     final gamePercentages = <String, double>{};
 
-    for (var gameName in gameGroupData.keys) {
+    for (var gameName in gameNames) {
       double gameTotal = 0;
 
       for (var gameData in gameGroupData[gameName]!) {

@@ -74,31 +74,21 @@ class _PieChart2State extends ConsumerState<PieChartSample2> {
   }
 
   Color _getColorFromName(String name) {
-    switch (name) {
-      case 'Betting':
+    switch (name.toLowerCase()) {
+      case 'betting':
         return Colors.red;
-      case 'DSTV':
+      case 'coffee':
         return Colors.orange;
-      case 'Coffee':
+      case 'dstv':
         return Colors.blue;
-      case 'Pool':
+      case 'pool':
         return Colors.green;
-      case 'PS':
+      case 'ps':
         return Colors.purple;
-      case 'VR':
+      case 'vr':
         return Colors.yellow;
       default:
         return Colors.pink;
     }
   }
 }
-
-final _colors = [
-  Colors.red,
-  Colors.orange,
-  Colors.blue,
-  Colors.green,
-  Colors.purple,
-  Colors.yellow,
-  Colors.pink,
-];

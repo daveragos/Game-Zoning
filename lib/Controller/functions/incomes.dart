@@ -30,7 +30,7 @@ class Income {
   }
 
   //function for getting income data with employee and date
-  Future<dynamic> getIncomeDataByEmployeeAndDate(
+  Future<Map<String, dynamic>> getIncomeDataByEmployeeAndDate(
       {required BuildContext context, required String date}) async {
     await init();
     final selectedEmployee =
@@ -44,8 +44,28 @@ class Income {
         'date': date,
       },
     );
-    //check all possible response types and return accordingly
-    return result;
+    final data = result.data['data'] as List<dynamic>;
+    final gameNames = ['betting', 'coffee', 'dstv', 'pool', 'ps', 'vr'];
+    final gameNameToAmount = <String, double>{};
+    print('dodododdddddata $data');
+// Initialize gameNameToAmount with 0 for all game names
+    for (final gameName in gameNames) {
+      gameNameToAmount[gameName] = 0;
+    }
+
+    for (final item in data) {
+      final gameName = item['game_name'].toString().toLowerCase();
+
+      // Update gameNameToAmount if the game name is in gameNames
+      if (gameNames.contains(gameName)) {
+        final amount = double.parse(item['amount'].toString());
+        gameNameToAmount[gameName] = amount;
+      }
+    }
+
+    print('dodododdo $gameNameToAmount');
+
+    return {'data': gameNameToAmount};
   }
 
   //function for getting income data with employee and game
@@ -188,7 +208,7 @@ class Income {
           'date': item['date']
         };
       }).toList();
-
+      print('the result is here : DODODODODODODODO : $gameDataList');
       // Print or use the gameDataList here
       // print(gameDataList);
       return gameDataList;
