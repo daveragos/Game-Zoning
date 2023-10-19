@@ -1,7 +1,9 @@
 //ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:gamezoning/Controller/Auth/authcheck.dart';
+import 'package:gamezoning/View/Home/email_input_screen.dart';
 import 'package:gamezoning/View/Home/login_screen.dart';
 import 'package:gamezoning/View/Home/register_page.dart';
+import 'package:gamezoning/View/Home/reset_password_screen.dart';
 import 'package:gamezoning/View/employee/adding_page.dart';
 import 'package:gamezoning/View/employee/e_home_page.dart';
 import 'package:gamezoning/View/owner/individual_linetab_page.dart';
@@ -18,6 +20,8 @@ class AppRouter {
   static const String lineChartPagePath = '/LineChartPage';
   static const String employeeHomePath = '/EmployeeHome';
   static const String landingPath = '/OwnerLandingPage';
+  static const String emailInputPath = '/EmailInput';
+  static const String resetPasswordPath = '/ResetPasswordScreen';
 
   // GoRouter configuration
   var router = GoRouter(
@@ -43,7 +47,16 @@ class AppRouter {
         path: addingPagePath,
         builder: (context, state) => AddingPage(),
       ),
-
+      GoRoute(
+        name: 'EmailInputPage',
+        path: emailInputPath,
+        builder: (context, state) => EmailInput(),
+      ),
+      GoRoute(
+        name: 'ResetScreen',
+        path: resetPasswordPath,
+        builder: (context, state) => const ResetPasswordScreen(),
+      ),
       GoRoute(
         name: 'EmployeeHome',
         path: employeeHomePath,

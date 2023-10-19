@@ -8,6 +8,8 @@ import 'package:gamezoning/Controller/functions/employee_getter.dart';
 import 'package:gamezoning/Controller/functions/owner_getter.dart';
 import 'package:gamezoning/Model/api.dart';
 import 'package:gamezoning/Model/api_constants.dart';
+import 'package:gamezoning/View/widgets/button_widget.dart';
+import 'package:gamezoning/View/widgets/textfield_widget.dart';
 import 'package:gamezoning/View/widgets/toggler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -155,7 +157,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.push(AppRouter.emailInputPath);
+                    },
                     child: Text('Forgot Password?'),
                   ),
                 ],
@@ -179,29 +183,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ],
               )
             ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Padding textField(
-      {required TextEditingController nameController,
-      required label,
-      required keyType,
-      required icon,
-      required hide}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
-        controller: nameController,
-        keyboardType: keyType,
-        obscureText: hide,
-        decoration: InputDecoration(
-          labelText: label,
-          prefixIcon: icon,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
           ),
         ),
       ),
