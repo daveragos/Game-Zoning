@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gamezoning/Controller/Routes/approuter.dart';
-import 'package:go_router/go_router.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -15,24 +13,19 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: const Center(
         child: Text(
-          'Game Zoner',
+          'G A M E   Z O N E R',
           style: TextStyle(
             color: Colors.green,
-            fontSize: 30,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
       actions: [
         IconButton(
+          tooltip: 'theme mode',
           onPressed: () {},
-          icon: const Icon(Icons.search),
-        ),
-        IconButton(
-          onPressed: () {
-            context.go(AppRouter.ownerHomePath);
-          },
-          icon: const Icon(Icons.notifications),
+          icon: const Icon(Icons.dark_mode),
         ),
       ],
     );

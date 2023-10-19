@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gamezoning/Controller/Provider/position_provider.dart';
+import 'package:gamezoning/Controller/Routes/approuter.dart';
 import 'package:go_router/go_router.dart';
 
 class BottomNavigationWidget extends ConsumerStatefulWidget {
@@ -36,10 +37,10 @@ class _BottomNavigationWidgetState
     ref.read(positionProvider.notifier).setPosition(value);
     switch (value) {
       case 0:
-        context.go('/linechartpage');
+        context.go(AppRouter.lineChartPagePath);
         break;
       case 1:
-        context.go('/OwnerHome');
+        context.go(AppRouter.ownerHomePath);
         break;
     }
   }

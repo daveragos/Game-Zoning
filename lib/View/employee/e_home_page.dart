@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gamezoning/Controller/Routes/approuter.dart';
+import 'package:gamezoning/View/employee/employee_drawer_widget.dart';
 import 'package:gamezoning/View/widgets/appbar_widget.dart';
-import 'package:gamezoning/View/widgets/drawer_widget.dart';
+import 'package:gamezoning/View/owner/owner_drawer_widget.dart';
 import 'package:gamezoning/View/widgets/homepage_widget.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,7 +19,7 @@ class _EmployeeHomeState extends ConsumerState<EmployeeHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppBarWidget(),
-      drawer: const DrawerWidget(),
+      drawer: const EmployeeDrawerWidget(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push(
           AppRouter.addingPagePath,

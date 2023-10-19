@@ -10,6 +10,7 @@ import 'package:gamezoning/View/owner/individual_linetab_page.dart';
 import 'package:gamezoning/View/owner/landing_page.dart';
 import 'package:gamezoning/View/owner/o_home_page.dart';
 import 'package:gamezoning/View/owner/swapping_page.dart';
+import 'package:gamezoning/View/widgets/profile_page.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
@@ -22,11 +23,17 @@ class AppRouter {
   static const String landingPath = '/OwnerLandingPage';
   static const String emailInputPath = '/EmailInput';
   static const String resetPasswordPath = '/ResetPasswordScreen';
+  static const String profilePath = '/Profile';
 
   // GoRouter configuration
   var router = GoRouter(
     initialLocation: '/',
     routes: [
+      GoRoute(
+        name: 'profile',
+        path: profilePath,
+        builder: (context, state) => const ProfilePage(),
+      ),
       GoRoute(
         name: 'authcheck',
         path: '/',

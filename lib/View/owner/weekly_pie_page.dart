@@ -34,7 +34,6 @@ class _PieChart2State extends ConsumerState<PieChartSample2> {
         borderData: FlBorderData(
           show: false,
         ),
-        sectionsSpace: 0,
         centerSpaceRadius: 40,
         sections: showingSections(),
       ),
@@ -62,7 +61,7 @@ class _PieChart2State extends ConsumerState<PieChartSample2> {
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
+              color: const Color(0x00000000),
               shadows: shadows,
             ),
             badgeWidget: null,
