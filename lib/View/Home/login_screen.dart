@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gamezoning/Controller/Constants/https_route_consts.dart';
@@ -67,14 +69,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           if (result.statusCode == 200) {
             //! storing the login info of the user to local db
             SharedPreferences pref = await SharedPreferences.getInstance();
-            await pref.setString(AppConstants.STORAGE_USER_PROFILE_KEY,
-                result.data['user'].toString());
+            await pref.setString(
+              AppConstants.STORAGE_USER_PROFILE_INFO,
+              json.encode(result.data['user']),
+            );
             await pref.setString(AppConstants.STORAGE_USER_PROFILE_TOKEN,
                 result.data['token'].toString());
             await pref.setString(AppConstants.STORAGE_USER_PROFILE_LABEL,
                 result.data['label'].toString());
             print(
-                'employees info saved: ${pref.getString(AppConstants.STORAGE_USER_PROFILE_KEY)}');
+                'employees info saved: ${pref.getString(AppConstants.STORAGE_USER_PROFILE_INFO)}');
 
             print('just the data from response :${result.data['user']}');
             // Parse the JSON response

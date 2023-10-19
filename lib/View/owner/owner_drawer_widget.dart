@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gamezoning/Controller/Routes/approuter.dart';
+import 'package:gamezoning/Model/api_constants.dart';
+import 'package:gamezoning/View/widgets/profile_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,7 +45,7 @@ class OwnerDrawerWidget extends StatelessWidget implements PreferredSizeWidget {
                     leading: const Icon(Icons.person),
                     title: const Text('P R O F I L E'),
                     onTap: () {
-                      context.push(AppRouter.profilePath);
+                      GoRouter.of(context).push(AppRouter.profilePath);
                     },
                   ),
                   ListTile(
