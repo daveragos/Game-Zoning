@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gamezoning/Controller/Provider/theme_provider.dart';
 
-class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
+class AppBarWidget extends ConsumerWidget implements PreferredSizeWidget {
   @override
   final Size preferredSize;
 
@@ -9,7 +11,8 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeData = ref.watch(selectedThemeProvider);
     return AppBar(
       title: const Center(
         child: Text(
@@ -24,7 +27,9 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           tooltip: 'theme mode',
-          onPressed: () {},
+          onPressed: () {
+            ref.read(selectedThemeProvider.notifier).setDate(!themeData);
+          },
           icon: const Icon(Icons.dark_mode),
         ),
       ],

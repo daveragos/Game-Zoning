@@ -14,6 +14,18 @@ class PieChartSample2 extends ConsumerStatefulWidget {
 class _PieChart2State extends ConsumerState<PieChartSample2> {
   @override
   Widget build(BuildContext context) {
+    final data = ref.read(weeklyDataProvider);
+
+    if (data == null || data.isEmpty || data['gamePercentages'] == null) {
+      // Handle the case where data is null or doesn't contain gamePercentages
+      return const Center(
+        child: Text(
+          '',
+          style: TextStyle(fontSize: 20),
+        ),
+      );
+    }
+
     return PieChart(
       PieChartData(
         pieTouchData: PieTouchData(
@@ -42,7 +54,10 @@ class _PieChart2State extends ConsumerState<PieChartSample2> {
 
   List<PieChartSectionData> showingSections() {
     final data = ref.read(weeklyDataProvider);
-    print('|||||||||||||||||||||||| ${data['gameDataList']}');
+    if (data == null || data['gamePercentages'] == null) {
+      return []; // Return an empty list when data is null or doesn't contain gamePercentages
+    }
+
     return data['gamePercentages']
         .entries
         .map((entry) {

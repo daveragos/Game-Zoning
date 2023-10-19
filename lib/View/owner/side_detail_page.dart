@@ -12,7 +12,7 @@ class SideDetail extends ConsumerWidget {
     final tabbed = ref.watch(selectedTabProvider);
     final detailData =
         ref.watch(weeklyDataProvider.notifier).state['gameGroupData'];
-    if (detailData.isEmpty) {
+    if (detailData == null || detailData.isEmpty) {
       // Handle the case where detailData is empty
       return const Center(
         child: Text(

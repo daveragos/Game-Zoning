@@ -12,6 +12,11 @@ class WeeklyData extends StateNotifier<Map<String, dynamic>> {
   Future<void> getData({required selectedDate, required context}) async {
     final response = await Income()
         .getAllWeeklyData(selectedDate: selectedDate, context: context);
+    if (response == null || response.isEmpty) {
+      // Handle the case where response is null or empty
+      state = {};
+      return;
+    }
     final gameDataList = response;
     final gameGroupData = <String, List<Map<String, dynamic>>>{};
 

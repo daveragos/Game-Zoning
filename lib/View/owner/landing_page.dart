@@ -50,7 +50,6 @@ class _OwnerLandingPageState extends ConsumerState<OwnerLandingPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const AppBarWidget(),
         drawer: const OwnerDrawerWidget(),
         body: !isLoading
             ? employees.isEmpty

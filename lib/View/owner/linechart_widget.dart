@@ -20,7 +20,7 @@ class LineChartWidget extends ConsumerWidget {
     //formate the date
     String formattedSelectedDate =
         DateFormat('yyyy-MM-dd').format(selectedDate);
-    if (lineData.isEmpty) {
+    if (lineData == null || lineData.isEmpty) {
       // Display a message to the user that there is no data available
       return Center(
         child: Text(
