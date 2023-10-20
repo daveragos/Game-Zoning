@@ -23,4 +23,5 @@ class Constants {
       'incomes/getByEmployeeAndWeeklyDate';
 
   static const String ADD_INCOME = 'incomes';
+  static const String isLightTheme = 'isLightTheme';
 }

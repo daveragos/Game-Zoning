@@ -65,7 +65,6 @@ class _PieChart2State extends ConsumerState<PieChartSample2> {
           final isTouched = index == ref.watch(selectedTabProvider);
           final fontSize = !isTouched ? 20.0 : 16.0;
           final radius = !isTouched ? 60.0 : 50.0;
-          const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
           final value = double.parse(entry.value.toStringAsFixed(2));
           final color = _getColorFromName(entry.key);
           return PieChartSectionData(
@@ -76,8 +75,6 @@ class _PieChart2State extends ConsumerState<PieChartSample2> {
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: const Color(0x00000000),
-              shadows: shadows,
             ),
             badgeWidget: null,
             badgePositionPercentageOffset: .98,

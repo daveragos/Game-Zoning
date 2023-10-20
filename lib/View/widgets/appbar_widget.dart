@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gamezoning/Controller/Provider/theme_provider.dart';
 
 class AppBarWidget extends ConsumerWidget implements PreferredSizeWidget {
@@ -12,7 +13,8 @@ class AppBarWidget extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeData = ref.watch(selectedThemeProvider);
+    final isLightMode = ref.watch(themePreferenceProvider);
+
     return AppBar(
       title: const Center(
         child: Text(
@@ -26,11 +28,13 @@ class AppBarWidget extends ConsumerWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-          tooltip: 'theme mode',
+          tooltip: 'Theme Mode',
           onPressed: () {
-            ref.read(selectedThemeProvider.notifier).setDate(!themeData);
+            ref.read(themePreferenceProvider.notifier).toggleTheme();
           },
-          icon: const Icon(Icons.dark_mode),
+          icon: isLightMode
+              ? const Icon(FontAwesomeIcons.solidMoon)
+              : const Icon(FontAwesomeIcons.solidSun),
         ),
       ],
     );
