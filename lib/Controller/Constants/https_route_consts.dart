@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 class Constants {
-  static const String BASE_URL = 'http://192.168.43.170:8000/api/';
+  static const String BASE_URL = 'http://gamezone.artseb.studio/api/';
   static const String OWNERS_LOGIN_URL = 'owners/login';
   static const String OWNERS_REGISTER_URL = 'owners/register';
   static const String EMPLOYEES_LOGIN_URL = 'employees/login';
