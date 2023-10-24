@@ -11,11 +11,8 @@ class TVCounterPage extends StatefulWidget {
 
 class _TVCounterPageState extends State<TVCounterPage> {
   late SharedPreferences _prefs;
-  int tv1 = 0;
-  int tv2 = 0;
-  int tv3 = 0;
-  int tv4 = 0;
-  int tv5 = 0;
+  int _numTVs = 5;
+  List<int> _tvCounters = [];
 
   @override
   void initState() {
@@ -26,138 +23,127 @@ class _TVCounterPageState extends State<TVCounterPage> {
   Future<void> _loadCounterState() async {
     _prefs = await SharedPreferences.getInstance();
     setState(() {
-      tv1 = _prefs.getInt('tv1') ?? 0;
-      tv2 = _prefs.getInt('tv2') ?? 0;
-      tv3 = _prefs.getInt('tv3') ?? 0;
-      tv4 = _prefs.getInt('tv4') ?? 0;
-      tv5 = _prefs.getInt('tv5') ?? 0;
+      _numTVs = _prefs.getInt('numTVs') ?? 5;
+      for (int i = 0; i < _numTVs; i++) {
+        _tvCounters.add(_prefs.getInt('tv$i') ?? 0);
+      }
     });
   }
 
   Future<void> _saveCounterState() async {
-    await _prefs.setInt('tv1', tv1);
-    await _prefs.setInt('tv2', tv2);
-    await _prefs.setInt('tv3', tv3);
-    await _prefs.setInt('tv4', tv4);
-    await _prefs.setInt('tv5', tv5);
+    await _prefs.setInt('numTVs', _numTVs);
+    for (int i = 0; i < _numTVs; i++) {
+      await _prefs.setInt('tv$i', _tvCounters[i]);
+    }
+  }
+
+  void _addTV() {
+    setState(() {
+      _numTVs++;
+      _tvCounters.add(0);
+      _saveCounterState();
+    });
+  }
+
+  void _removeTV() {
+    setState(() {
+      if (_numTVs > 0) {
+        _numTVs--;
+        _tvCounters.removeLast();
+        _saveCounterState();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-        ),
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          int? tv;
-          switch (index) {
-            case 0:
-              tv = tv1;
-              break;
-            case 1:
-              tv = tv2;
-              break;
-            case 2:
-              tv = tv3;
-              break;
-            case 3:
-              tv = tv4;
-              break;
-            case 4:
-              tv = tv5;
-              break;
-          }
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Stack(
-                alignment: AlignmentDirectional.center,
-                children: [
-                  Icon(FontAwesomeIcons.tv,
-                      size: 100, color: Theme.of(context).primaryColor),
-                  Positioned(
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      constraints: const BoxConstraints(
-                        minWidth: 16,
-                        minHeight: 16,
-                      ),
-                      child: Text(
-                        '$tv',
-                        style: const TextStyle(
-                          fontSize: 60,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                ],
+      body: Column(
+        children: [
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        switch (index) {
-                          case 0:
-                            tv1 = 0;
-                            break;
-                          case 1:
-                            tv2 = 0;
-                            break;
-                          case 2:
-                            tv3 = 0;
-                            break;
-                          case 3:
-                            tv4 = 0;
-                            break;
-                          case 4:
-                            tv5 = 0;
-                            break;
-                        }
-                        _saveCounterState();
-                      });
-                    },
-                    icon: const Icon(FontAwesomeIcons.xmark),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        switch (index) {
-                          case 0:
-                            tv1++;
-                            break;
-                          case 1:
-                            tv2++;
-                            break;
-                          case 2:
-                            tv3++;
-                            break;
-                          case 3:
-                            tv4++;
-                            break;
-                          case 4:
-                            tv5++;
-                            break;
-                        }
-                        _saveCounterState();
-                      });
-                    },
-                    icon: const Icon(FontAwesomeIcons.plus),
-                  ),
-                ],
+              itemCount: _numTVs,
+              itemBuilder: (context, index) {
+                int? tv = _tvCounters[index];
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        Icon(FontAwesomeIcons.tv,
+                            size: 100, color: Theme.of(context).primaryColor),
+                        Positioned(
+                          child: Transform.translate(
+                            offset: const Offset(7, -2),
+                            child: Container(
+                              padding: const EdgeInsets.all(2),
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              constraints: const BoxConstraints(
+                                minWidth: 16,
+                                minHeight: 16,
+                              ),
+                              child: Text(
+                                '$tv',
+                                style: const TextStyle(
+                                  fontSize: 60,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _tvCounters[index] = 0;
+                              _saveCounterState();
+                            });
+                          },
+                          icon: const Icon(FontAwesomeIcons.xmark),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _tvCounters[index]++;
+                              _saveCounterState();
+                            });
+                          },
+                          icon: const Icon(FontAwesomeIcons.plus),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                onPressed: _removeTV,
+                icon: const Icon(Icons.remove),
+              ),
+              IconButton(
+                onPressed: _addTV,
+                icon: const Icon(Icons.add),
               ),
             ],
-          );
-        },
+          ),
+        ],
       ),
     );
   }
