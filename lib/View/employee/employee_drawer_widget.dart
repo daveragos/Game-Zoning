@@ -46,9 +46,11 @@ class EmployeeDrawerWidget extends StatelessWidget
                     },
                   ),
                   ListTile(
-                    leading: const Icon(Icons.settings),
-                    title: const Text('S E T T I N G'),
-                    onTap: () {},
+                    leading: const Icon(FontAwesomeIcons.plus),
+                    title: const Text('C O U N T E R'),
+                    onTap: () {
+                      context.push(AppRouter.counterPath);
+                    },
                   ),
                 ],
               ),

@@ -46,6 +46,7 @@ class _PieChart2State extends ConsumerState<PieChartSample2> {
         borderData: FlBorderData(
           show: false,
         ),
+        sectionsSpace: 0,
         centerSpaceRadius: 40,
         sections: showingSections(),
       ),

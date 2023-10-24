@@ -6,6 +6,7 @@ import 'package:gamezoning/View/Home/register_page.dart';
 import 'package:gamezoning/View/Home/reset_password_screen.dart';
 import 'package:gamezoning/View/employee/adding_page.dart';
 import 'package:gamezoning/View/employee/e_home_page.dart';
+import 'package:gamezoning/View/employee/pstv_page.dart';
 import 'package:gamezoning/View/owner/individual_linetab_page.dart';
 import 'package:gamezoning/View/owner/landing_page.dart';
 import 'package:gamezoning/View/owner/o_home_page.dart';
@@ -24,11 +25,17 @@ class AppRouter {
   static const String emailInputPath = '/EmailInput';
   static const String resetPasswordPath = '/ResetPasswordScreen';
   static const String profilePath = '/Profile';
+  static const String counterPath = '/counterPage';
 
   // GoRouter configuration
   var router = GoRouter(
     initialLocation: '/',
     routes: [
+      GoRoute(
+        name: 'counter',
+        path: counterPath,
+        builder: (context, state) => TVCounterPage(),
+      ),
       GoRoute(
         name: 'profile',
         path: profilePath,
