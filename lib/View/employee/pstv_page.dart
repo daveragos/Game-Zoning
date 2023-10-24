@@ -12,7 +12,7 @@ class TVCounterPage extends StatefulWidget {
 class _TVCounterPageState extends State<TVCounterPage> {
   late SharedPreferences _prefs;
   int _numTVs = 5;
-  List<int> _tvCounters = [];
+  final List<int> _tvCounters = [];
 
   @override
   void initState() {
@@ -80,7 +80,7 @@ class _TVCounterPageState extends State<TVCounterPage> {
                             size: 100, color: Theme.of(context).primaryColor),
                         Positioned(
                           child: Transform.translate(
-                            offset: const Offset(7, -2),
+                            offset: const Offset(10, -5),
                             child: Container(
                               padding: const EdgeInsets.all(2),
                               decoration: const BoxDecoration(
