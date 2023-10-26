@@ -1,7 +1,12 @@
 on:
+  pull_request:
+    branches:
+      - main
+      - master
   push:
     branches:
       - main
+      - master
 name: "Build and Release"
 jobs:
   build:
@@ -20,7 +25,7 @@ jobs:
           channel: 'stable'
       
       - run: flutter pub get
-      - run: flutter build apk
+      - run: flutter build apk --release --split-per-abi
 
       - name: Push to Release
         uses: ncipollo/release-action@v1
