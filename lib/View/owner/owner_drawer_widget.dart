@@ -55,11 +55,6 @@ class OwnerDrawerWidget extends StatelessWidget implements PreferredSizeWidget {
                       context.go(AppRouter.landingPath);
                     },
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.settings),
-                    title: const Text('S E T T I N G'),
-                    onTap: () {},
-                  ),
                 ],
               ),
               ListTile(
