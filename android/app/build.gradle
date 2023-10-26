@@ -60,9 +60,9 @@ android {
    signingConfigs {
        release {
            keyAlias keystoreProperties['keyAlias']
-           keyPassword keystoreProperties['artsebstudio_gamezone']
+           keyPassword keystoreProperties['keyPassword']
            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-           storePassword keystoreProperties['artsebstudio_gamezone']
+           storePassword keystoreProperties['storePassword']
        }
    }
    buildTypes {
