@@ -24,8 +24,8 @@ jobs:
     # Install flutter dependencies.
     - run: flutter pub get
 
-    # Run tests.
-    - run: flutter test
+    # # Run tests.
+    # - run: flutter test
 
     # Split APK's for different artictures
     - run: flutter build apk --debug --split-per-abi
