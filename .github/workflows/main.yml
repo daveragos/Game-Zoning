@@ -32,8 +32,8 @@ jobs:
 
     # Upload apk to the artifacts.
     - name: Create a Release APK
-
       uses: ncipollo/release-action@v1
       with:
         artifacts: "build/app/outputs/apk/debug/*.apk"
+        tag: v1.0.0  # Use the tag you created
         token: ${{ secrets.TOKEN }}
