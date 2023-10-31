@@ -55,6 +55,11 @@ class _AddingPageState extends ConsumerState<AddingPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Text(
+                      'Add Income On : ${DateFormat('yyyy-MM-dd').format(DateTime.now())}',
+                      style: TextStyle(fontSize: 23),
+                    ),
+                    SizedBox(height: 10),
                     DropdownMenu(
                       width: 300,
                       leadingIcon: Icon(Icons.gamepad),
@@ -85,15 +90,6 @@ class _AddingPageState extends ConsumerState<AddingPage> {
                       ),
                     ),
                     SizedBox(height: 10),
-                    TextButton.icon(
-                      label: Text(
-                        'Currently Picked Date : ${DateFormat('yyyy-MM-dd').format(selectedDateWatcher)}',
-                        style: TextStyle(fontSize: 23),
-                      ),
-                      icon: Icon(Icons.calendar_month),
-                      onPressed: () => _openDatePicker(),
-                    ),
-                    SizedBox(height: 10),
                   ],
                 ),
               ),
@@ -102,7 +98,7 @@ class _AddingPageState extends ConsumerState<AddingPage> {
                 margin: EdgeInsets.all(8),
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
-                    onPressed: () => submit(selectedDate: selectedDateWatcher),
+                    onPressed: () => submit(),
                     child: Text(
                       'Submit',
                       style: TextStyle(fontSize: 25),
@@ -115,26 +111,12 @@ class _AddingPageState extends ConsumerState<AddingPage> {
     );
   }
 
-  void _openDatePicker() async {
-    selectedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2023),
-      lastDate: DateTime.now(),
-    );
-    if (selectedDate != null) {
-      ref.watch(selectedDateProvider.notifier).setDate(selectedDate!);
-    } else {
-      ref.watch(selectedDateProvider.notifier).resetDate();
-    }
-  }
-
-  submit({required selectedDate}) {
+  submit() {
     if (gameController.text.isNotEmpty && amountController.text.isNotEmpty) {
       // Add the data to the database
       //format the selectedDate to yyyy-mm-dd
       String formattedSelectedDate =
-          DateFormat('yyyy-MM-dd').format(selectedDate);
+          DateFormat('yyyy-MM-dd').format(DateTime.now());
 
       Income().addIncomeData(
           gameName: gameController.text,

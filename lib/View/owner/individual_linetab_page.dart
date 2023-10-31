@@ -47,7 +47,7 @@ class _IndividualLineTabState extends ConsumerState<IndividualLineTab>
     selectedDate = ref.watch(selectedDateProvider);
     return SafeArea(
       child: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(child: CircularProgressIndicator())
           : DefaultTabController(
               length: 6,
               child: Column(

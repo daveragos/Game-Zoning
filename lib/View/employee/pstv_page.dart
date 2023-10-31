@@ -23,7 +23,11 @@ class _TVCounterPageState extends State<TVCounterPage> {
   Future<void> _loadCounterState() async {
     _prefs = await SharedPreferences.getInstance();
     setState(() {
-      _numTVs = _prefs.getInt('numTVs') ?? 5;
+      if (_prefs.containsKey('numTVs')) {
+        _numTVs = _prefs.getInt('numTVs')!;
+      } else {
+        _prefs.setInt('numTVs', _numTVs);
+      }
       for (int i = 0; i < _numTVs; i++) {
         _tvCounters.add(_prefs.getInt('tv$i') ?? 0);
       }

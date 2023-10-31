@@ -23,16 +23,16 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Determine New Release Version
-        id: determine_version
-        run: echo "RELEASE_VERSION=v$(date +'%Y.%m.%d')" >> $GITHUB_ENV
+      # - name: Determine New Release Version
+      #   id: determine_version
+      #   run: echo "RELEASE_VERSION=v$(date +'%Y.%m.%d')" >> $GITHUB_ENV
 
-      - name: Build the Flutter app
-        run: flutter build apk --release --split-per-abi
+      # - name: Build the Flutter app
+      #   run: flutter build apk --release --split-per-abi
 
-      - name: Create a Release APK
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/apk/release/*.apk"
-          tag: ${{ env.RELEASE_VERSION }}
-          token: ${{ secrets.TOKEN }}
+      # - name: Create a Release APK
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     artifacts: "build/app/outputs/apk/release/*.apk"
+      #     tag: ${{ env.RELEASE_VERSION }}
+      #     token: ${{ secrets.TOKEN }}

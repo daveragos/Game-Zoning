@@ -6,6 +6,8 @@ import 'package:gamezoning/Controller/Provider/date_provider.dart';
 import 'package:gamezoning/Controller/functions/incomes.dart';
 import 'package:gamezoning/Model/api_constants.dart';
 import 'package:intl/intl.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -74,11 +76,22 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Center(
-        child: isLoading
-            ? CircularProgressIndicator()
-            : Column(
+    return Center(
+      child: isLoading
+          ? CircularProgressIndicator()
+          : LiquidPullToRefresh(
+              height: 225,
+              color: Colors.green,
+              showChildOpacityTransition: false,
+              borderWidth: 2,
+              onRefresh: () async {
+                // 0911122465
+                //await for 2 seconds
+                await Future.delayed(Duration(seconds: 1));
+                getUserData(selectedDate: ref.watch(selectedDateProvider));
+                isLoading = false;
+              },
+              child: ListView(
                 children: [
                   SizedBox(width: 10),
                   _buildInfoContainer(preferences
@@ -182,14 +195,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                   )
                 ],
               ),
-      ),
+            ),
     );
   }
 
   void _openDatePicker() async {
     final selectedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: ref.watch(selectedDateProvider),
       firstDate: DateTime(2023),
       lastDate: DateTime.now(),
     );
